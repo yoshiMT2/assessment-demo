@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import InputField from "../components/parts/InputField";
 import Button from "../components/parts/Button";
 // import { login } from "../utils/AuthService";
@@ -61,12 +61,12 @@ function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <a
-          href="/forgot"
+        <NavLink
+          to="/forgot"
           className="mt-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
         >
           Forgot password?
-        </a>
+        </NavLink>
         <Button title="Login" disabled={!buttonEnabled} />
       </form>
     </div>
