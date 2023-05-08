@@ -62,7 +62,7 @@ function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <a
-          href="/forgot/"
+          href="/forgot"
           className="mt-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
         >
           Forgot password?
