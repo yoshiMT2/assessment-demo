@@ -1,20 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import { MarkedSlider } from '../slider'
+import { Dropdown } from '../dropdown'
+import Button from '../parts/Button'
+import {
+  QUESTIONS,
+  MEMBERS,
+  USER,
+  DEFAULT_OPTION
+} from '../../utils/constants'
 
 export default function AssessmentTemplate() {
-  const QUESTIONS = [
-    { id: 1, text: "このチームでは私の失敗が非難されがちだ" },
-    { id: 2, text: "このチームでは私は言いたいことを我慢している" },
-    { id: 3, text: "このチームでは自分の居場所がなく感じることがある" },
-    { id: 4, text: "このチームでは私の個性が尊重されている" },
-    { id: 5, text: "このチームでは私は周囲にも言いたいことを言わせている" },
-    { id: 6, text: "このチームでは私はＨＥＬＰを出しにくい" },
-    { id: 7, text: "このチームでは私は適度に挨拶をしている" },
-    { id: 8, text: "私は自分の仕事に対する原動力が明らかになっている" },
-    { id: 9, text: "私が自分が仕事において何を価値観として大事にしたいかが明らかになっている" },
-    { id: 10, text: "私は自分のキャリアビジョンが描けている（短期的でもよい）" },
-  ]
+
+  const [options, setOptions] = useState()
   const [answerArray, setAnswerArray] = useState(
     QUESTIONS.map(item => ({ id: item.id, answer: 1 })
     ))
@@ -34,36 +32,49 @@ export default function AssessmentTemplate() {
       }
     }
   }
-  console.log(answerArray)
+  useEffect(() => {
+    if (!MEMBERS) { return }
+    const memberPlusMe = [USER, ...MEMBERS]
+    const selection = memberPlusMe.filter(m => m.id === 0 || m.assessor_id === 0)
+    setOptions(selection.map(s => ({ value: s.id, label: s.name })))
+  }, []);
 
   return (
     <>
-      <div className='grid grid-cols-3'>
-        <div className='col-span-2'>
-          <ul>
-            {QUESTIONS.map(
-              question =>
-                <li
-                  key={question.id}
-                  className='py-6'
-                >
-                  <p className='py-2'>{question.text}</p>
-                  <MarkedSlider question={question} setAnswer={createAnswerArray} />
-                </li>
-            )}
-          </ul>
+      <div>
+        <div className='py-6 w-64'>
+          <Dropdown
+            options={options}
+            defaultValue={DEFAULT_OPTION}
+          />
         </div>
-        <div className='col-span-1 pl-10 pt-4'>
-          {answerArray && (
-            answerArray.map(answer =>
-              <p key={answer.id} className='py-10'>
-                問題{answer.id}の解答：　{answer.answer}
-              </p>
-            ))}
+        <div className='w-full'>
+          <div className=''>
+            <ul>
+              {QUESTIONS.map(
+                question =>
+                  <li
+                    key={question.id}
+                    className='py-6'
+                  >
+                    <p className='py-2'>{question.text}</p>
+                    <MarkedSlider question={question} setAnswer={createAnswerArray} />
+                  </li>
+              )}
+            </ul>
+          </div>
+        </div>
+        <div className='flex justify-center py-6'>
+          <Button
+            title="提出する"
+            className='w-80
+             bg-cyan-500'
+          />
+        </div>
 
-        </div>
 
       </div>
+
     </>
   )
 }
