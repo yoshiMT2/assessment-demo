@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -10,6 +10,9 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { NavLink } from 'react-router-dom'
+import { userAtom } from '../../utils/atom'
+import { useAtom } from 'jotai'
+// import { User } from '../../utils/type'
 
 const navigation = [
   { name: 'マイページ', href: '/', icon: HomeIcon, current: true },
@@ -23,11 +26,21 @@ function classNames(...classes) {
 }
 
 export default function Sidebar() {
+  const [user,] = useAtom(userAtom)
+  const [menuItems, setMenuItems] = useState(navigation.slice(0,3))
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [menu, setMenu] = useState('マイページ')
   const handleMenuItemClick = (itemName) =>{
     setMenu(itemName)
   }
+
+  useEffect(() => {
+    if (user.is_staff) {
+      setMenuItems(navigation)
+    } else {
+      setMenuItems(navigation.slice(0, 3))
+    }
+  },[user.is_staff])
 
   return (
     <>
@@ -86,7 +99,7 @@ export default function Sidebar() {
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
-                            {navigation.map((item) => (
+                            {menuItems.map((item) => (
                               <li key={item.name}>
                                 <NavLink
                                   to={item.href}
@@ -137,7 +150,7 @@ export default function Sidebar() {
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-3">
-                    {navigation.map((item) => (
+                    {menuItems.map((item) => (
                       <li key={item.name}>
                         <NavLink
                           to={item.href}

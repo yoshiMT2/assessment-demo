@@ -1,16 +1,14 @@
-import { tokenAtom } from './atom';
+import { tokenAtom, userAtom } from './atom';
 import { getCookie } from "./cookies";
 import { useAtom } from 'jotai';
 import jwt_decode from 'jwt-decode';
-import {
-  LOGIN_ENDPOINT,
-  FORGOT_ENDPOINT,
-  RESET_ENDPOINT,
-} from "./constants";
-
+import { LOGIN_ENDPOINT, FORGOT_ENDPOINT, RESET_ENDPOINT, BACKEND_URL } from "./constants";
+import { Token, Decoded, User } from './type'
 
 export const useLogin = () => {
-  const [, setToken] = useAtom(tokenAtom)
+  const [, setAccessToken] = useAtom(tokenAtom)
+  const [, setUser] = useAtom(userAtom)
+
   const csrftoken = getCookie("csrftoken");
 
   const login = async (email, password) => {
@@ -24,14 +22,15 @@ export const useLogin = () => {
     };
     console.log(LOGIN_ENDPOINT)
     const resp = await fetch(LOGIN_ENDPOINT, requestOptions);
+    const token: Token = await resp.json()
 
-    const token = await resp.json()
-    console.log(token)
     if (token) {
-      setToken(token)
-      const decoded = jwt_decode(token);
-      console.log(decoded)
-      localStorage.setItem("userDetails", JSON.stringify(decoded));
+      setAccessToken(token.access)
+      const decoded: Decoded = jwt_decode(token.access);
+      const userId = decoded.user_id
+      const resp = await fetch(`${BACKEND_URL}api/user/display/${userId}/`)
+      const data: User = await resp.json()
+      setUser(data)
     }
   };
   return { login }
@@ -41,12 +40,12 @@ export const useLogin = () => {
 
 export const sendLink = async (email) => {
   const payload = { email };
-  const resp = await fetch(FORGOT_ENDPOINT, payload, {});
+  const resp = await fetch(FORGOT_ENDPOINT);
   return resp;
 };
 
 export const resetPassword = async (resetkey, newPassword) => {
   const payload = { "reset_secret": resetkey, "password": newPassword };
-  const resp = await fetch(RESET_ENDPOINT, payload, {});
+  const resp = await fetch(RESET_ENDPOINT);
   return resp;
 };

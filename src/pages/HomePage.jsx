@@ -4,9 +4,8 @@ import { tokenAtom } from '../utils/atom';
 import { useAtom } from 'jotai';
 
 const Home = () => {
-  const [token,] = useAtom(tokenAtom)
-  // const [userDetails] = UseUserDetails();
-  if (!token) {
+  const [accessToken,] = useAtom(tokenAtom)
+  if (!accessToken) {
     return <Navigate to="/login" />;
 }
   return (

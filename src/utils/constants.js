@@ -11,6 +11,8 @@ export const  RESET_ENDPOINT = BACKEND_URL + 'api/user/password-reset/'
 
 export const  FORGOT_ENDPOINT = BACKEND_URL + 'api/user/forgot/'
 
+
+
 export const QUESTIONS = [
   { id: 1, text: "このチームでは私の失敗が非難されがちだ" },
   { id: 2, text: "このチームでは私は言いたいことを我慢している" },
