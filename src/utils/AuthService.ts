@@ -36,14 +36,6 @@ export const useLogin = () => {
   return { login }
 }
 
-
-
-export const sendLink = async (email) => {
-  const payload = { email };
-  const resp = await fetch(FORGOT_ENDPOINT);
-  return resp;
-};
-
 export const resetPassword = async (resetkey, newPassword) => {
   const payload = { "reset_secret": resetkey, "password": newPassword };
   const resp = await fetch(RESET_ENDPOINT);

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { sendLink } from '../utils/AuthService';
 import Loader from '../components/loader';
 import Button from '../components/parts/Button';
 import InputField from '../components/parts/InputField';
 import Modal from '../components/modal';
+import { RESET_ENDPOINT } from '../utils/constants';
 
 function ForgotPasswordPage() {
   const navigate = useNavigate()
@@ -15,6 +15,7 @@ function ForgotPasswordPage() {
   const [showModal, setShowModal] = useState(false)
   const [modalTitle, setModalTitle] = useState("")
   const [modalMsg, setModalMsg] = useState("")
+
 
 
   useEffect(() => {
@@ -28,7 +29,15 @@ function ForgotPasswordPage() {
   const sendEmail = async () => {
     setIsWaiting(true)
     try {
-      const res = await sendLink(formEmail);
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formEmail })
+      };
+      const res = await fetch(RESET_ENDPOINT, requestOptions);
+      const data = await res.json()
       if (res.status === 200) {
         setResponseStatus("success")
         setModalTitle("パスワード再設定のリンクが送信されました")
@@ -72,13 +81,14 @@ function ForgotPasswordPage() {
         <Button
           title="Reset Password"
           disabled={!buttonEnabled}
+          className="bg-indigo-600"
         />
       </form>
       {isWaiting ? (
         <Loader />
       ) : null
       }
-      { showModal ? (
+      {showModal ? (
         <Modal
           open={showModal}
           title={modalTitle}
@@ -86,7 +96,7 @@ function ForgotPasswordPage() {
           status={responseStatus}
           onConfirm={onConfirm}
         />
-      ) : null }
+      ) : null}
     </div>
 
   )
