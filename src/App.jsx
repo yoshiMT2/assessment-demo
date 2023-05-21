@@ -5,31 +5,41 @@ import Resigter from './pages/RegisterPage';
 import Result from './pages/ResultPage';
 import Team from './pages/TeamPage';
 import LoginPage from './pages/LoginPage';
-import ForgotPage from './pages/ForgotPage';
+import ForgotPaswordPage from './pages/ForgotPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import SideNavigationLayout from './components/Layout';
+// import { UserProvider } from "./context/UserContext";
+
+
 function App() {
 
   return (
     <>
       <Router>
-        <Routes>
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/forgot' element={<ForgotPage />} />
-          <Route
-            path="*"
-            element={
-              <SideNavigationLayout>
-                <Routes>
-                  <Route path='/' element={<Home />} />
-                  <Route path='/assessment' element={<Assesment />} />
-                  <Route path='/result' element={<Result />} />
-                  <Route path='/team' element={<Team />} />
-                  <Route path='/register' element={<Resigter />} />
-                </Routes>
-              </SideNavigationLayout>
-            }
-          />
-        </Routes>
+        {/* <UserProvider> */}
+          <Routes>
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/forgot' element={<ForgotPaswordPage />} />
+            <Route path="/reset">
+              <Route path=":resetkey" element={<ResetPasswordPage />}/>
+            </Route>
+            <Route
+              path="*"
+              element={
+                <SideNavigationLayout>
+                  <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/assessment' element={<Assesment />} />
+                    <Route path='/result' element={<Result />} />
+                    <Route path='/team' element={<Team />} />
+                    <Route path='/register' element={<Resigter />} />
+                  </Routes>
+                </SideNavigationLayout>
+              }
+            />
+          </Routes>
+        {/* </UserProvider> */}
+
       </Router>
     </>
   )

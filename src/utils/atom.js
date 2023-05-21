@@ -1,3 +1,3 @@
 import { atom } from 'jotai'
 
-export const menuAtom = atom('マイページ')
+export const tokenAtom = atom('')

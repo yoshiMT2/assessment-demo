@@ -1,3 +1,15 @@
+export const BACKEND_URL =
+    '__env__' in window ? window.__env__.BACKEND_URL : 'https://heartbeatdraft4-production.up.railway.app/';
+
+export const LOGIN_ENDPOINT = BACKEND_URL + 'api/auth/jwt/creat/'
+
+export const REFRESH_ENDPOINT = BACKEND_URL + 'auth/jwt/refresh/'
+
+export const VERIFY_ENDPOINT = BACKEND_URL + 'api/auth/jwt/verify/'
+
+export const  RESET_ENDPOINT = BACKEND_URL + 'api/user/password-reset/'
+
+export const  FORGOT_ENDPOINT = BACKEND_URL + 'api/user/forgot/'
 
 export const QUESTIONS = [
   { id: 1, text: "このチームでは私の失敗が非難されがちだ" },

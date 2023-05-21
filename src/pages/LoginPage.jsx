@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import InputField from "../components/parts/InputField";
 import Button from "../components/parts/Button";
-// import { login } from "../utils/AuthService";
+import { useLogin } from "../utils/AuthService";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -10,6 +10,7 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [buttonEnabled, setButtonEnabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const { login } = useLogin()
 
   useEffect(() => {
     if (email && password) {
@@ -19,26 +20,23 @@ function LoginPage() {
     }
   }, [email, password, buttonEnabled]);
 
-  const loginUser = async () => {
+  const submitHandler = async (e) => {
+    e.preventDefault();
     try {
-      // await login(email, password);
+      await login(email, password);
       navigate("/");
-      window.location.reload(false);
+      // window.location.reload(false);
     } catch (error) {
       setErrorMessage(error);
+      console.log(error)
     }
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    loginUser();
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-indigo-100">
       <form
         className="p-10 bg-white rounded-xl drop-shadow-xl space-y-3"
-        onSubmit={submitHandler}
+        onSubmit={(e)=>submitHandler(e)}
       >
         <h1 className="text-indigo-600 text-3xl text-center">Sign In</h1>
         <p
@@ -67,7 +65,11 @@ function LoginPage() {
         >
           Forgot password?
         </NavLink>
-        <Button title="Login" disabled={!buttonEnabled} />
+        <Button
+          title="Login"
+          className="bg-indigo-600"
+          disabled={!buttonEnabled}
+        />
       </form>
     </div>
   );

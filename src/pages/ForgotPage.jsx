@@ -1,12 +1,94 @@
-import { NavLink } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { sendLink } from '../utils/AuthService';
+import Loader from '../components/loader';
+import Button from '../components/parts/Button';
+import InputField from '../components/parts/InputField';
+import Modal from '../components/modal';
 
-const ForgotPage = () => {
+function ForgotPasswordPage() {
+  const navigate = useNavigate()
+  const [formEmail, setFormEmail] = useState('');
+  const [buttonEnabled, setButtonEnabled] = useState();
+  const [isWaiting, setIsWaiting] = useState(false)
+  const [responseStatus, setResponseStatus] = useState("")
+  const [showModal, setShowModal] = useState(false)
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalMsg, setModalMsg] = useState("")
+
+
+  useEffect(() => {
+    if (formEmail) {
+      setButtonEnabled(true);
+    } else {
+      setButtonEnabled(false);
+    }
+  }, [formEmail]);
+
+  const sendEmail = async () => {
+    setIsWaiting(true)
+    try {
+      const res = await sendLink(formEmail);
+      if (res.status === 200) {
+        setResponseStatus("success")
+        setModalTitle("パスワード再設定のリンクが送信されました")
+        setModalMsg("メールを確認し、本文中にあるリンクよりパスワード再設定の手続きを行ってください。")
+        setIsWaiting(false)
+        setShowModal(true)
+      }
+    } catch (error) {
+      setResponseStatus("failed")
+      setModalTitle("送信が失敗しました")
+      setModalMsg("メールアドレスをご確認いただくか、管理者にお問合せください")
+      setIsWaiting(false)
+      setShowModal(true)
+    }
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    sendEmail();
+  }
+
+  function onConfirm() {
+    setShowModal(false)
+    navigate("/login");
+    window.location.reload(false);
+  }
+
   return (
-    <>
-      <div className='bg-indigo-500 text-white text-7xl text-center'>パスワード再設定</div>
-      <NavLink to='/' className='text-3xl text-center p-6'>戻る</NavLink>
-    </>
+    <div className="flex items-center justify-center min-h-screen bg-indigo-100">
+      <form
+        className="p-10 bg-white w-96 rounded-xl drop-shadow-xl space-y-5"
+        onSubmit={submitHandler}
+      >
+        <p className="text-center text-sm">登録しているメールアドレスを入力してください</p>
+        <InputField
+          type="email"
+          label="Email"
+          value={formEmail}
+          onChange={(e) => setFormEmail(e.target.value)}
+        />
+        <Button
+          title="Reset Password"
+          disabled={!buttonEnabled}
+        />
+      </form>
+      {isWaiting ? (
+        <Loader />
+      ) : null
+      }
+      { showModal ? (
+        <Modal
+          open={showModal}
+          title={modalTitle}
+          msg={modalMsg}
+          status={responseStatus}
+          onConfirm={onConfirm}
+        />
+      ) : null }
+    </div>
+
   )
 }
-
-export default ForgotPage
+export default ForgotPasswordPage;
