@@ -1,7 +1,7 @@
 export const BACKEND_URL =
     '__env__' in window ? window.__env__.BACKEND_URL : 'https://heartbeatdraft4-production.up.railway.app/';
 
-export const LOGIN_ENDPOINT = BACKEND_URL + 'api/auth/jwt/creat/'
+export const LOGIN_ENDPOINT = BACKEND_URL + 'api/auth/jwt/create/'
 
 export const REFRESH_ENDPOINT = BACKEND_URL + 'auth/jwt/refresh/'
 
