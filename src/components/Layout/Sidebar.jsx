@@ -1,25 +1,17 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import {
-  Bars3Icon,
-  DocumentTextIcon,
-  HomeIcon,
-  PencilSquareIcon,
-  UsersIcon,
-  UserPlusIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
 import { NavLink } from 'react-router-dom'
 import { userAtom } from '../../utils/atom'
 import { useAtom } from 'jotai'
+import { HomeIcon, DocumentMinusIcon ,Cog8ToothIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/20/solid'
 // import { User } from '../../utils/type'
 
 const navigation = [
   { name: 'HOME', href: '/', icon: HomeIcon, current: true },
-  { name: 'アセスメントを実施', href: '/assessment', icon: PencilSquareIcon, current: false },
-  { name: 'アセスメント結果を確認', href: '/result', icon: DocumentTextIcon, current: false },
-  { name: '編集', href: '/team', icon: UsersIcon, current: false },
-  { name: 'ユーザー登録', href: '/register', icon: UserPlusIcon, current: false },
+  { name: 'アセスメントを実施', href: '/assessment', icon: DocumentMinusIcon, current: false },
+  { name: 'アセスメント結果を確認', href: '/result', icon: DocumentMinusIcon, current: false },
+  { name: '編集', href: '/edit', icon: Cog8ToothIcon, current: false },
+  { name: 'ログアウト', href: '/logout', icon: ArrowLeftOnRectangleIcon, current: false },
 ]
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -28,7 +20,6 @@ function classNames(...classes) {
 export default function Sidebar() {
   const [user,] = useAtom(userAtom)
   const [menuItems, setMenuItems] = useState(navigation.slice(0,3))
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [menu, setMenu] = useState('HOME')
   const handleMenuItemClick = (itemName) =>{
     setMenu(itemName)
@@ -38,7 +29,7 @@ export default function Sidebar() {
     if (user.is_staff) {
       setMenuItems(navigation)
     } else {
-      setMenuItems(navigation.slice(0, 3))
+      setMenuItems(navigation.slice(0, 6))
     }
   },[user.is_staff])
 
@@ -52,8 +43,8 @@ export default function Sidebar() {
               <ul role="list" className="flex flex-1 flex-col">
                 <li>
                   <ul role="list" className="-mx-primary-2 space-y-3">
-                    {menuItems.map((item) => (
-                      <li key={item.name}>
+                    {menuItems.map((item, index) => (
+                      <li key={index}>
                         <NavLink
                           to={item.href}
                           onClick={()=>handleMenuItemClick(item.name)}
@@ -73,13 +64,13 @@ export default function Sidebar() {
                           />
                           {item.name}
                         </NavLink>
-                        <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3'></div>
+                        { menuItems.length -1 > index
+                          ? <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                          : null
+                        }
                       </li>
                     ))}
                   </ul>
-                  <NavLink>
-                    ログアウト
-                  </NavLink>
                 </li>
               </ul>
             </nav>

@@ -1,4 +1,5 @@
 import Button from '../button';
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 export default function HomeTemplate() {
   return (
@@ -8,7 +9,7 @@ export default function HomeTemplate() {
           <div className='w-full mx-3 md:w-5/6 my-10 bg-white'>
             <div className='mx-10'>
               <div className='mt-3 flex items-center'>
-                <circle className='ml-3 h-4 w-4 bg-slate-200' />
+              <ExclamationCircleIcon className='ml-3 h-5 w-5 text-slate-400' />
                 <p className='ml-2'>本人のアセスメントが未実施です</p>
               </div>
               <div className='mt-2 border-[0.5px] border-gray-400'></div>
@@ -25,8 +26,8 @@ export default function HomeTemplate() {
           <div className='w-full mx-3 md:w-5/6 my-10 bg-white'>
           <div className='mx-10'>
               <div className='mt-3 flex items-center'>
-                <circle className='ml-3 h-4 w-4 bg-slate-200' />
-                <p className='ml-2'>未実施の第三者アセスメント</p>
+                <ExclamationCircleIcon className='ml-3 h-5 w-5 text-slate-400' />
+                <p className='ml-1'>未実施の第三者アセスメント</p>
               </div>
               <div className='mt-2 border-[0.5px] border-gray-400'></div>
             </div>
