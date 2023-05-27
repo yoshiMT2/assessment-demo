@@ -2,14 +2,17 @@
 import { Navigate } from "react-router-dom";
 import { tokenAtom } from '../utils/atom';
 import { useAtom } from 'jotai';
+import HomeTemplate from '../components/templates/HomeTemplate';
 
 const Home = () => {
-  const [accessToken,] = useAtom(tokenAtom)
-  if (!accessToken) {
-    return <Navigate to="/login" />;
-}
+  // const [accessToken,] = useAtom(tokenAtom)
+//   if (!accessToken) {
+//     return <Navigate to="/login" />;
+// }
   return (
-    <div className='bg-indigo-500 text-white text-7xl text-center'>Home</div>
+    <div className='relative top-16 flex justify-center'>
+      <HomeTemplate/>
+    </div>
   )
 }
 
