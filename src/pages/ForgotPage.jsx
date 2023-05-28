@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from '../components/loader';
-import Button from '../components/parts/Button';
-import InputField from '../components/parts/InputField';
+import Button from '../components/button';
+import InputField from '../components/inputfield';
 import Modal from '../components/modal';
 import { RESET_ENDPOINT } from '../utils/constants';
 

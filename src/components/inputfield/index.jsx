@@ -1,4 +1,3 @@
-import React from 'react';
 
 function InputField (props) {
     const className = `px-3 py-2 rounded-md bg-indigo-50 border border-slate-300 focus:bg-transparent placeholder-slate-400 focus:border-indigo-400 focus:border-1 focus:outline-none st ${props.className || ''}`

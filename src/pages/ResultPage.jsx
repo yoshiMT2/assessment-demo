@@ -1,7 +1,11 @@
+import ResultTemplate from '../components/templates/ResultTemplate'
+
 
 const Result = () => {
   return (
-    <div className='bg-green-500 text-white text-7xl text-center'>結果閲覧</div>
+    <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>
+      <ResultTemplate/>
+    </div>
   )
 }
 

@@ -1,23 +1,23 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useMemo } from 'react';
 import Select from 'react-select';
+import { dropboxStyles } from './style';
 
 
-export const Dropdown = ({ options, defaultValue }) => {
+export default function Dropdown ({ options, selectedOption, setSelectedOption }){
 
-  const [selectedOption, setSelectedOption] = useState(defaultValue);
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
+  const handleChange = (value) => {
+    setSelectedOption(value);
   }
 
   return (
     <div className='text-lg text-black'>
       <Select
+        styles={dropboxStyles}
         value={selectedOption}
         onChange={handleChange}
         options={options}
+        placeholder="要選択"
+        isSearchable={false}
       />
     </div>
   )

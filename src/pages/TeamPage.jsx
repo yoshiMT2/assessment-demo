@@ -1,8 +1,10 @@
+import TeamTemplate from '../components/templates/TeamTemplate'
 
 const Team = () => {
   return (
-    <div className='bg-cyan-500 text-white text-7xl text-center'>チーム</div>
-  )
+    <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>
+      <TeamTemplate />
+    </div>)
 }
 
 export default Team

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import InputField from "../components/parts/InputField";
-import Button from "../components/parts/Button";
+import InputField from "../components/inputfield";
+import Button from "../components/button";
 import { useLogin } from "../utils/AuthService";
 
 function LoginPage() {

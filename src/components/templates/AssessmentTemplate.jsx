@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import { MarkedSlider } from '../slider'
-import { Dropdown } from '../dropdown'
-import Button from '../parts/Button'
+import Dropdown from '../dropdown'
+import Button from '../button'
 import {
   QUESTIONS,
   MEMBERS,
@@ -42,14 +42,9 @@ export default function AssessmentTemplate() {
   return (
     <>
       <div>
-        <div className='py-6 w-64'>
-          <Dropdown
-            options={options}
-            defaultValue={DEFAULT_OPTION}
-          />
-        </div>
         <div className='w-full'>
-          <div className=''>
+          <div className='mt-6'>
+            <div className='text-center text-2xl mb-2'>〜 さんのアセスメント</div>
             <ul>
               {QUESTIONS.map(
                 question =>

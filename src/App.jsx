@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Assesment from './pages/AssessmentPage';
 import Home from './pages/HomePage';
-import Resigter from './pages/RegisterPage';
+import RegisterMember from './pages/RegisterMemberPage';
 import Result from './pages/ResultPage';
 import Team from './pages/TeamPage';
 import LoginPage from './pages/LoginPage';
@@ -32,7 +32,7 @@ function App() {
                     <Route path='/assessment' element={<Assesment />} />
                     <Route path='/result' element={<Result />} />
                     <Route path='/team' element={<Team />} />
-                    <Route path='/register' element={<Resigter />} />
+                    <Route path='/register/member' element={<RegisterMember />} />
                   </Routes>
                 </SideNavigationLayout>
               }

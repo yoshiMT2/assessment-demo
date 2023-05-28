@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { resetPassword } from '../utils/AuthService';
 import Loader from '../components/loader';
 import Modal from '../components/modal';
-import Button from '../components/parts/Button';
-import InputField from '../components/parts/InputField';
+import Button from '../components/button';
+import InputField from '../components/inputfield';
 
 function ResetPasswordPage() {
   const { resetkey } = useParams()
