@@ -61,7 +61,6 @@ export default function Sidebar() {
     <>
       <div>
         <div className=" bg-zinc-100 top-16 fixed z-20 flex w-60 h-screen flex-col">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col mt-3 overflow-y-auto border-r px-6">
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="-mx-primary-2 space-y-3">

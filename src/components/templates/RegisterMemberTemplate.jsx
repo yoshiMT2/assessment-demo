@@ -49,17 +49,16 @@ export default function RegisterMemberTemplate() {
   const [selectedMethod, setSelectedMethod] = useState()
   const [selectedAssignMethod, setSelectedAssignMethod] = useState()
   const [selectedType, setSelectedType] = useState()
+  const [numOfAssessor, setNumOfAssessor] = useState()
   const [teamMembers, setTeamMembers] = useState()
 
-  function handleClick(member) {
-    setSelectedMember(member)
-  }
   useEffect(() => {
     if (!selectedCompany) { return }
     const teams = Teams.filter(t => t.company_id === selectedCompany.value)
     const options = teams.map(t => ({ value: t.team_id, label: t.team_name }))
     setTeamOptions(options)
     setSelectedTeam(null)
+    setSelectedMethod(null)
   }, [selectedCompany])
 
   useEffect(() => {
@@ -91,46 +90,53 @@ export default function RegisterMemberTemplate() {
               setSelectedOption={setSelectedTeam}
             />
           </div>
-          <div className='w-32 ml-6'>
-            <div className='mb-2'>登録・編集方法</div>
-            <Dropdown
-              options={RegistrationMethods}
-              selectedOption={selectedMethod}
-              setSelectedOption={setSelectedMethod}
-            />
-          </div>
-          <div className='w-32 ml-6'>
-            <div className='mb-2'>種別</div>
-            <Dropdown
-              options={Types}
-              selectedOption={selectedType}
-              setSelectedOption={setSelectedType}
-            />
-          </div>
-          {selectedType && selectedType.value === 1 && (
-            <>
-              <div className='w-36 ml-6'>
-                <div className='mb-2'>第三者評価者の設定</div>
-                <Dropdown
-                  options={AssignMethods}
-                  selectedOption={selectedAssignMethod}
-                  setSelectedOption={setSelectedAssignMethod}
+          {selectedTeam && (
+            <div className='w-32 ml-6'>
+              <div className='mb-2'>登録・編集方法</div>
+              <Dropdown
+                options={RegistrationMethods}
+                selectedOption={selectedMethod}
+                setSelectedOption={setSelectedMethod}
+              />
+            </div>
+          )}
+          {selectedMethod && (
+            <div className='w-32 ml-6'>
+              <div className='mb-2'>種別</div>
+              <Dropdown
+                options={Types}
+                selectedOption={selectedType}
+                setSelectedOption={setSelectedType}
+              />
+            </div>
+          )}
+          {selectedMethod && selectedMethod.value === 1 && (
+            <div className='w-36 ml-6'>
+              <div className='mb-2'>第三者評価者の設定</div>
+              <Dropdown
+                options={AssignMethods}
+                selectedOption={selectedAssignMethod}
+                setSelectedOption={setSelectedAssignMethod}
+              />
+            </div>
+          )}
+          {selectedAssignMethod && selectedAssignMethod.value === 1 && (
+            <div className='ml-6 w-52'>
+              <div className='mb-2 ml-2'>アサイン人数</div>
+              <div className='flex h-10 items-center'>
+                <input
+                  type="number"
+                  min={0}
+                  placeholder={1}
+                  value={numOfAssessor}
+                  onChange={e => setNumOfAssessor(e.target.value)}
+                  className="h-10 w-24 ml-2 text-center rounded border-gray-300 text-indigo-600 hover:ring-indigo-600"
                 />
               </div>
-              <div className='ml-6 w-52'>
-                <div className='mb-2 ml-2'>アサイン人数</div>
-                <div className='flex h-10 items-center'>
-                  <input
-                    type="number"
-                    min={0}
-                    className="h-10 w-24 ml-2 text-center rounded border-gray-300 text-indigo-600 hover:ring-indigo-600"
-                  />
-                </div>
-              </div>
-            </>
+            </div>
           )}
         </div>
-        {selectedMethod && selectedType && selectedMethod.value === 1 && (
+        {selectedMethod && selectedType && selectedAssignMethod && selectedMethod.value === 1 && (
           <div className='flex mt-6 mr-10 justify-center gap-20'>
             <div className='text-center'>
               <div>CSVダウンロード</div>
