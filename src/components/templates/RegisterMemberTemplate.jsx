@@ -43,7 +43,7 @@ const Types = [
 ]
 
 export default function RegisterMemberTemplate() {
-  const [selectedCompany, setSelectedCompany] = useState(Companies[0])
+  const [selectedCompany, setSelectedCompany] = useState()
   const [teamOptions, setTeamOptions] = useState()
   const [selectedTeam, setSelectedTeam] = useState()
   const [selectedMethod, setSelectedMethod] = useState()
@@ -59,11 +59,14 @@ export default function RegisterMemberTemplate() {
     const teams = Teams.filter(t => t.company_id === selectedCompany.value)
     const options = teams.map(t => ({ value: t.team_id, label: t.team_name }))
     setTeamOptions(options)
-    setSelectedTeam(options[0])
+    setSelectedTeam(null)
   }, [selectedCompany])
 
   useEffect(() => {
-    if (!selectedTeam) { return }
+    if (!selectedTeam) {
+      setTeamMembers(null)
+      return
+    }
     const members = Members.filter(m => m.team_id === selectedTeam.value)
     setTeamMembers(members)
   }, [selectedTeam])
