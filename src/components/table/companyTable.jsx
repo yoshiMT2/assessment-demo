@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 
-export default function MemberTable({ teamName, members }) {
+export default function CompanyTable({ companies }) {
   return (
     <div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-2xl font-semibold leading-6 text-gray-900">{teamName} </h1>
+            <h1 className="text-2xl font-semibold leading-6 text-gray-900">会社登録・編集</h1>
           </div>
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button
@@ -23,8 +23,8 @@ export default function MemberTable({ teamName, members }) {
           <table className="w-full text-center">
             <thead className="sticky top-0 bg-white shadow z-10">
               <tr>
-                <th scope="col" className="py-3.5 w-1/6 text-sm lg:text-base font-semibold text-gray-900">
-                  名前
+                <th scope="col" className="py-3.5 w-1/12 text-sm lg:text-base font-semibold text-gray-900">
+                  ID
                   <div className="absolute inset-y-0 right-full z-0 w-screen border-b border-b-gray-200" />
                   <div className="absolute inset-y-0 left-0 z-0 w-screen border-b border-b-gray-200" />
                 </th>
@@ -32,19 +32,25 @@ export default function MemberTable({ teamName, members }) {
                   scope="col"
                   className="hidden py-3.5 text-sm lg:text-base w-1/12 font-semibold text-gray-900 sm:table-cell"
                 >
-                  権限
+                  会社名
                 </th>
                 <th
                   scope="col"
-                  className="hidden py-3.5 w-1/4 text-sm lg:text-base font-semibold text-gray-900 md:table-cell"
+                  className="hidden py-3.5 w-1/12 text-sm lg:text-base font-semibold text-gray-900 md:table-cell"
                 >
-                  所属部署
+                  作成日
                 </th>
-                <th scope="col" className="hidden py-3.5 w-1/4 text-sm lg:text-base font-semibold text-gray-900 lg:table-cell">
-                  Email
+                <th scope="col" className="hidden py-3.5 w-1/6 text-sm lg:text-base font-semibold text-gray-900 lg:table-cell">
+                  サブスク開始日
                 </th>
                 <th scope="col" className="py-3.5 w-1/6 text-sm lg:text-base font-semibold text-gray-900">
-                  ステータス
+                  サブスク更新日
+                </th>
+                <th scope="col" className="py-3.5 w-1/6 text-sm lg:text-base font-semibold text-gray-900">
+                  サブスク更新日
+                </th>
+                <th scope="col" className="py-3.5 w-1/6 text-sm lg:text-base font-semibold text-gray-900">
+                  サブドメイン名
                 </th>
                 <th scope="col" className="relative py-3.5 w-1/12">
                   <span className=""></span>
@@ -55,35 +61,22 @@ export default function MemberTable({ teamName, members }) {
           <div className="h-[400px] overflow-y-auto">
             <table className="w-full w- text-center">
               <tbody >
-                {members.map((person, index) => (
+                {companies.map((company, index) => (
                   <tr key={index} >
-                    <td className="relative py-4 w-1/6 text-sm lg:text-base font-medium text-gray-900">
-                      {person.name}
+                    <td className="relative py-4 w-1/12 text-sm lg:text-base font-medium text-gray-900">
+                      {company.id}
                       <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
                       <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
                     </td>
-                    <td className="hidden px-3 py-4 w-1/12 text-sm lg:text-base text-gray-500 sm:table-cell">{person.role}</td>
-                    {person.teams && (
-                      <td className="hidden px-3 py-4 w-1/4 text-sm lg:text-base text-gray-500 md:table-cell">
-                        {person.teams.map((team, idx) => (
-                          <span key={idx}>{team} </span>
-                        ))}
-                      </td>
-                    )}
-                    <td className="hidden px-3 py-4 w-1/4 text-sm lg:text-base text-gray-500 lg:table-cell">{person.email}</td>
-                    <td className="px-3 py-4 text-sm lg:text-base w-1/6 text-gray-500">
-                      {person.isActive
-                        ? <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                          有効
-                        </span>
-                        : <span className="inline-flex items-center rounded-md bg-rose-50 px-2 py-1 text-xs font-medium text-rose-700 ring-1 ring-inset ring-rose-600/20">
-                          停止中
-                        </span>
-                      }
-                    </td>
+                    <td className="hidden px-3 py-4 w-1/12 text-sm lg:text-base text-gray-500 sm:table-cell">{company.name}</td>
+                    <td className="hidden px-3 py-4 w-1/12 text-sm lg:text-base text-gray-500 lg:table-cell">{company.createdAt}</td>
+                    <td className="hidden px-3 py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.startedAt}</td>
+                    <td className="hidden px-3 py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.updatedAt}</td>
+                    <td className="hidden px-3 py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.endedAt}</td>
+                    <td className="hidden px-3 py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subdomain}</td>
                     <td className="relative py-4 px-3 w-1/12 text-left text-sm lg:text-base font-medium">
                       <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                        編集<span className="sr-only">, {person.name}</span>
+                        編集<span className="sr-only">, {company.name}</span>
                       </a>
                     </td>
                   </tr>

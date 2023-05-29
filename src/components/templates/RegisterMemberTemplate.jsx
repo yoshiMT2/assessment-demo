@@ -79,8 +79,8 @@ export default function RegisterMemberTemplate() {
   return (
     <div className='w-full bg-slate-100 overflow-auto'>
       <div className='mx-4'>
-        <div className='flex mt-4 ml-6'>
-          <div className='w-52  z-20'>
+        <div className='lg:flex'>
+          <div className='w-52 z-20 mt-4 ml-6'>
             <div className='mb-2'>会社を選択</div>
             <Dropdown
               options={Companies}
@@ -88,7 +88,7 @@ export default function RegisterMemberTemplate() {
               setSelectedOption={setSelectedCompany}
             />
           </div>
-          <div className='w-48 ml-6 z-20'>
+          <div className='w-48 ml-6 mt-4 z-20'>
             <div className='mb-2'>チームを選択</div>
             <Dropdown
               options={teamOptions}
@@ -97,8 +97,8 @@ export default function RegisterMemberTemplate() {
             />
           </div>
           {selectedTeam && (
-            <div className='w-32 ml-6 z-20'>
-              <div className='mb-2'>登録・編集方法</div>
+            <div className='w-32 ml-6 mt-4 z-20'>
+              <div className='mb-2 whitespace-nowrap'>登録・編集方法</div>
               <Dropdown
                 options={RegistrationMethods}
                 selectedOption={selectedMethod}
@@ -107,7 +107,7 @@ export default function RegisterMemberTemplate() {
             </div>
           )}
           {selectedMethod && selectedMethod.value === 1 && (
-            <div className='w-32 ml-6 z-20'>
+            <div className='w-32 ml-6 mt-4 z-20'>
               <div className='mb-2'>種別</div>
               <Dropdown
                 options={Types}
@@ -117,8 +117,8 @@ export default function RegisterMemberTemplate() {
             </div>
           )}
           {selectedMethod && selectedMethod.value === 1 && (
-            <div className='w-36 ml-6 z-20'>
-              <div className='mb-2'>第三者評価者の設定</div>
+            <div className='w-36 ml-6 mt-4 z-20'>
+              <div className='mb-2 whitespace-nowrap'>第三者評価者の設定</div>
               <Dropdown
                 options={AssignMethods}
                 selectedOption={selectedAssignMethod}
@@ -126,9 +126,9 @@ export default function RegisterMemberTemplate() {
               />
             </div>
           )}
-          {selectedAssignMethod && selectedAssignMethod.value === 1 && (
-            <div className='ml-6 w-52'>
-              <div className='mb-2 ml-2'>アサイン人数</div>
+          {selectedAssignMethod && selectedAssignMethod.value === 1 && selectedMethod.value === 1 && (
+            <div className='ml-6 mt-4 w-52'>
+              <div className='mb-2 '>アサイン人数</div>
               <div className='flex h-10 items-center'>
                 <input
                   type="number"

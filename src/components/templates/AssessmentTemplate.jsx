@@ -7,7 +7,6 @@ import {
   QUESTIONS,
   MEMBERS,
   USER,
-  DEFAULT_OPTION
 } from '../../utils/constants'
 
 export default function AssessmentTemplate() {

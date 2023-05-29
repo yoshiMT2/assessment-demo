@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Assesment from './pages/AssessmentPage';
 import Home from './pages/HomePage';
 import RegisterMember from './pages/RegisterMemberPage';
+import RegisterCompany from './pages/RegisterCompanyPage';
 import Result from './pages/ResultPage';
 import Team from './pages/TeamPage';
 import LoginPage from './pages/LoginPage';
@@ -33,6 +34,7 @@ function App() {
                     <Route path='/result' element={<Result />} />
                     <Route path='/team' element={<Team />} />
                     <Route path='/register/member' element={<RegisterMember />} />
+                    <Route path='/register/company' element={<RegisterCompany />} />
                   </Routes>
                 </SideNavigationLayout>
               }
