@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Dropdown from '../dropdown'
 import Button from '../button'
 import CsvUploader from '../csvUploader'
+import MemberTable from '../table/memberTable'
 
 const Companies = [
   { value: 1, label: "丸紅" },
@@ -11,23 +12,23 @@ const Teams = [
   { company_id: 1, team_id: 1, team_name: "総務" },
   { company_id: 1, team_id: 2, team_name: "経理" },
   { company_id: 1, team_id: 3, team_name: "営業" },
-  { company_id: 2, team_id: 4, team_name: "人事" },
-  { company_id: 2, team_id: 5, team_name: "経営企画" },
-  { company_id: 2, team_id: 6, team_name: "海外事業部" },
+  { company_id: 1, team_id: 4, team_name: "人事" },
+  { company_id: 1, team_id: 5, team_name: "経営企画" },
+  { company_id: 1, team_id: 6, team_name: "海外事業部" },
 ]
 const Members = [
-  { company_id: 1, team_id: 1, member_id: 1, member_name: "長谷部誠" },
-  { company_id: 1, team_id: 1, member_id: 2, member_name: "本田圭佑" },
-  { company_id: 1, team_id: 2, member_id: 3, member_name: "香川真司" },
-  { company_id: 1, team_id: 2, member_id: 4, member_name: "内田篤人" },
-  { company_id: 1, team_id: 3, member_id: 5, member_name: "吉田麻也" },
-  { company_id: 1, team_id: 3, member_id: 6, member_name: "大久保嘉人" },
-  { company_id: 2, team_id: 4, member_id: 7, member_name: "岡崎慎司" },
-  { company_id: 2, team_id: 4, member_id: 8, member_name: "川島永嗣" },
-  { company_id: 2, team_id: 5, member_id: 9, member_name: "今野泰幸" },
-  { company_id: 2, team_id: 5, member_id: 10, member_name: "長友佑都" },
-  { company_id: 2, team_id: 6, member_id: 11, member_name: "酒井宏樹" },
-  { company_id: 2, team_id: 6, member_id: 12, member_name: "遠藤保仁" },
+  { company_id: 1, team_id: 1, member_id: 1, name: "長谷部誠", email: "m-hasebe@sjr.com", role: "責任者", teams: ["総務", "経理", "営業"], isActive: true },
+  { company_id: 1, team_id: 1, member_id: 2, name: "本田圭佑", email: "k-honda@sjr.com", role: "一般", teams: ["総務"], isActive: true },
+  { company_id: 1, team_id: 2, member_id: 3, name: "香川真司", email: "s-kagawa@sjr.com", role: "責任者", teams: ["経理", "営業"], isActive: true },
+  { company_id: 1, team_id: 2, member_id: 4, name: "内田篤人", email: "a-uchida@sjr.com", role: "一般", teams: ["経理"], isActive: true },
+  { company_id: 1, team_id: 3, member_id: 5, name: "吉田麻也", email: "m-yoshida@sjr.com", role: "責任者", teams: ["営業"], isActive: true },
+  { company_id: 1, team_id: 3, member_id: 6, name: "大久保嘉人", email: "y-ookubo@sjr.com", role: "一般", teams: ["営業"], isActive: false },
+  { company_id: 2, team_id: 4, member_id: 7, name: "岡崎慎司", email: "s-okazaki@sjr.com", role: "責任者", teams: ["人事", "経営企画", "海外事業部"], isActive: true },
+  { company_id: 2, team_id: 4, member_id: 8, name: "川島永嗣", email: "e-kawashima@sjr.com", role: "一般", teams: ["人事"], isActive: true },
+  { company_id: 2, team_id: 5, member_id: 9, name: "今野泰幸", email: "y-konno@sjr.com", role: "責任者", teams: ["経営企画", "海外事業部"], isActive: true },
+  { company_id: 2, team_id: 5, member_id: 10, name: "長友佑都", email: "y-nagatomo@sjr.com", role: "一般", teams: ["経営企画"], isActive: false },
+  { company_id: 2, team_id: 6, member_id: 11, name: "酒井宏樹", email: "h-sakai@sjr.com", role: "責任者", teams: ["海外事業部"], isActive: true },
+  { company_id: 2, team_id: 6, member_id: 12, name: "遠藤保仁", email: "y-endo@sjr.com", role: "一般", teams: ["海外事業部"], isActive: true },
 ]
 const RegistrationMethods = [
   { value: 1, label: "CSV" },
@@ -50,6 +51,7 @@ export default function RegisterMemberTemplate() {
   const [selectedAssignMethod, setSelectedAssignMethod] = useState()
   const [selectedType, setSelectedType] = useState()
   const [numOfAssessor, setNumOfAssessor] = useState()
+  // const [members, setMembers] = useState()
   const [teamMembers, setTeamMembers] = useState()
 
   useEffect(() => {
@@ -62,19 +64,23 @@ export default function RegisterMemberTemplate() {
   }, [selectedCompany])
 
   useEffect(() => {
-    if (!selectedTeam) {
+    if (!selectedTeam || !selectedMethod) {
       setTeamMembers(null)
       return
     }
-    const members = Members.filter(m => m.team_id === selectedTeam.value)
-    setTeamMembers(members)
-  }, [selectedTeam])
+    if (selectedMethod.value === 2) {
+      const members = Members.filter(m => m.team_id === selectedTeam.value)
+      setTeamMembers(members)
+    } else {
+      setTeamMembers(null)
+    }
+  }, [selectedTeam, selectedMethod])
 
   return (
     <div className='w-full bg-slate-100 overflow-auto'>
       <div className='mx-4'>
         <div className='flex mt-4 ml-6'>
-          <div className='w-52'>
+          <div className='w-52  z-20'>
             <div className='mb-2'>会社を選択</div>
             <Dropdown
               options={Companies}
@@ -82,7 +88,7 @@ export default function RegisterMemberTemplate() {
               setSelectedOption={setSelectedCompany}
             />
           </div>
-          <div className='w-48 ml-6'>
+          <div className='w-48 ml-6 z-20'>
             <div className='mb-2'>チームを選択</div>
             <Dropdown
               options={teamOptions}
@@ -91,7 +97,7 @@ export default function RegisterMemberTemplate() {
             />
           </div>
           {selectedTeam && (
-            <div className='w-32 ml-6'>
+            <div className='w-32 ml-6 z-20'>
               <div className='mb-2'>登録・編集方法</div>
               <Dropdown
                 options={RegistrationMethods}
@@ -100,8 +106,8 @@ export default function RegisterMemberTemplate() {
               />
             </div>
           )}
-          {selectedMethod && (
-            <div className='w-32 ml-6'>
+          {selectedMethod && selectedMethod.value === 1 && (
+            <div className='w-32 ml-6 z-20'>
               <div className='mb-2'>種別</div>
               <Dropdown
                 options={Types}
@@ -111,7 +117,7 @@ export default function RegisterMemberTemplate() {
             </div>
           )}
           {selectedMethod && selectedMethod.value === 1 && (
-            <div className='w-36 ml-6'>
+            <div className='w-36 ml-6 z-20'>
               <div className='mb-2'>第三者評価者の設定</div>
               <Dropdown
                 options={AssignMethods}
@@ -152,12 +158,16 @@ export default function RegisterMemberTemplate() {
                 <CsvUploader />
               </div>
             </div>
-
           </div>
         )}
-        <div>
-
-        </div>
+        {teamMembers && (
+          <div className={`bg-white px-2 pt-6 ${selectedMethod.value===1 ? "mt-6" : "mt-16"} rounded-lg border`}>
+            <MemberTable teamName={selectedTeam.label} members={teamMembers} />
+          </div>
+        )}
+        {/* <div className='bg-white px-2 pt-4 mt-6 rounded-lg border'>
+            <MemberTable teamName="全メンバー" members={Members} />
+          </div> */}
       </div>
     </div>
   )

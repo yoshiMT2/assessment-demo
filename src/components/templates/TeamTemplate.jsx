@@ -46,6 +46,8 @@ export default function TeamTemplate() {
     const options = teams.map(t => ({ value: t.team_id, label: t.team_name }))
     setTeamOptions(options)
     setSelectedTeam(null)
+    setSelectedMember(null)
+
   }, [selectedCompany])
 
   useEffect(() => {
@@ -103,12 +105,12 @@ export default function TeamTemplate() {
             </div>
           </div>
         )}
-        {selectedMember && (
+        {selectedTeam && selectedMember && (
           <div className='mt-8 mx-6'>
             <div className='mb-2'>{selectedMember.member_name} のアセスメント結果</div>
             <div className=' bg-white w-full h-64 flex items-center justify-start overflow-x-scroll'>
               <div>
-                <div className='h-44 w-72'>
+                <div className='h-44 w-72 '>
                   <div className='ml-10 text-red-600 text-sm'>自己評価</div>
                   <RadarChart />
                 </div>
