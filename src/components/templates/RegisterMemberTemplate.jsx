@@ -12,9 +12,9 @@ const Teams = [
   { company_id: 1, team_id: 1, team_name: "総務" },
   { company_id: 1, team_id: 2, team_name: "経理" },
   { company_id: 1, team_id: 3, team_name: "営業" },
-  { company_id: 1, team_id: 4, team_name: "人事" },
-  { company_id: 1, team_id: 5, team_name: "経営企画" },
-  { company_id: 1, team_id: 6, team_name: "海外事業部" },
+  { company_id: 2, team_id: 4, team_name: "人事" },
+  { company_id: 2, team_id: 5, team_name: "経営企画" },
+  { company_id: 2, team_id: 6, team_name: "海外事業部" },
 ]
 const Members = [
   { company_id: 1, team_id: 1, member_id: 1, name: "長谷部誠", email: "m-hasebe@sjr.com", role: "責任者", teams: ["総務", "経理", "営業"], isActive: true },
