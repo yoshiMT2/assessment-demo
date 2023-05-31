@@ -59,34 +59,36 @@ function ResetPasswordPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-indigo-100">
+    <div className="flex flex-col items-center justify-start min-h-screen ">
       <form
-        className="p-10 bg-white w-96 rounded-xl drop-shadow-xl"
+        className="p-10 bg-white w-96 "
         onSubmit={submitHandler}
       >
-        <p className="text-center">新しいパスワードを設定してください</p>
-        <p className="text-center">（半角英数8文字以上）</p>
-        <div className="py-2" />
-        <InputField
+        <div className="py-10" />
+        <p className="text-3xl lg:w-96 md:w-80 w-56 text-center font-bold">パスワード再設定</p>
+        <div className="py-10" />
+        <p className='ml-3 mb-1'>新しいパスワード</p>
+        <input
           type="password"
-          label="新しいパスワード"
+          className="lg:w-96 md:w-80 w-56 pl-5 rounded-full focus:border-0 "
           value={password}
+          placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className="py-3" />
-        <InputField
+        <p className='ml-3 mb-1'>新しいパスワード（確認用）</p>
+        <input
           type="password"
-          label="新しいパスワード（確認用）"
+          className="lg:w-96 md:w-80 w-56 pl-5 rounded-full focus:border-0 "
           value={confirmation}
+          placeholder="Password"
           onChange={(e) => setConfirmation(e.target.value)}
         />
-        <div className="py-3" />
-        <div className="flex justify-center">
-          <Button
-            title="パスワードを再設定する"
-            disabled={!buttonEnabled}
-          />
-        </div>
+        <Button
+          title="変更"
+          className="mt-10 lg:w-96 md:w-80 w-56"
+          disabled={!buttonEnabled}
+        />
       </form>
       {isWaiting ? (
         <Loader />

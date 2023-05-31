@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import InputField from "../components/inputfield";
 import Button from "../components/button";
 import { useLogin } from "../utils/AuthService";
 
@@ -33,44 +32,49 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-indigo-100">
+    <div className="flex flex-col items-center justify-start min-h-screen ">
       <form
-        className="p-10 bg-white rounded-xl drop-shadow-xl space-y-3"
-        onSubmit={(e)=>submitHandler(e)}
+        className="p-5"
+        onSubmit={(e) => submitHandler(e)}
       >
-        <h1 className="text-indigo-600 text-3xl text-center">Sign In</h1>
+        <h1 className="text-indigo-600 pt-32 mb-5 text-3xl text-center">ロゴ</h1>
         <p
-          className={`text-red-600 text-sm text-center ${
-            errorMessage ? "opacity-100" : "opacity-0"
-          }`}
+          className={`text-red-600 text-sm text-center ${errorMessage ? "opacity-100" : "opacity-0"
+            }`}
         >
           emailかパスワードが間違っています
         </p>
-        <InputField
-          className="lg:w-96 md:w-80 w-56 bg-indigo-50"
-          label="Email"
+        <p className='ml-3 mb-1'>メールアドレス</p>
+        <input
+          className="lg:w-96 md:w-80 w-56 rounded-full focus:border-0 "
+          label="メールアドレス"
           type="email"
           value={email}
+          placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <InputField
-          label="Password"
+        <p className='ml-3 mb-1 mt-4'>パスワード</p>
+        <input
+          className="lg:w-96 md:w-80 w-56 rounded-full focus:border-0 "
+          label="パスワード"
           type="password"
           value={password}
+          placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <NavLink
-          to="/forgot"
-          className="mt-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
-        >
-          Forgot password?
-        </NavLink>
+
         <Button
           title="Login"
-          className="bg-indigo-600"
+          className="mt-8 lg:w-96 md:w-80 w-56"
           disabled={!buttonEnabled}
         />
       </form>
+      <NavLink
+        to="/forgot"
+        className="-mt-1 underline text-sm hover:opacity-60 transition-opacity"
+      >
+        パスワードを忘れた場合
+      </NavLink>
     </div>
   );
 }

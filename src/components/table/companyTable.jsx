@@ -1,6 +1,9 @@
-/* eslint-disable react/prop-types */
 
-export default function CompanyTable({ companies }) {
+// eslint-disable-next-line react/prop-types
+export default function CompanyTable({ companies, setShowModal, setCompanyToEdit }) {
+  function handleCreateButtonClick () {
+    setShowModal(true)
+  }
   return (
     <div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -12,6 +15,7 @@ export default function CompanyTable({ companies }) {
             <button
               type="button"
               className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={handleCreateButtonClick}
             >
               新規登録
             </button>
@@ -75,7 +79,11 @@ export default function CompanyTable({ companies }) {
                     <td className="hidden px-3 py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.endedAt}</td>
                     <td className="hidden px-3 py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subdomain}</td>
                     <td className="relative py-4 px-3 w-1/12 text-left text-sm lg:text-base font-medium">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                      <a
+                        href="#"
+                        className="text-indigo-600 hover:text-indigo-900"
+                        onClick={()=> setCompanyToEdit(company)}
+                      >
                         編集<span className="sr-only">, {company.name}</span>
                       </a>
                     </td>
