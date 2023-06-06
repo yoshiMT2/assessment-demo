@@ -9,7 +9,9 @@ const ResigterCompany = () => {
     async function getCompanies() {
       const resp = await fetch(COMPANY_REGISTER_ENDPOINT)
       const data = await resp.json()
-      setCompanies(data)
+      console.log(data.status_code)
+      setCompanies(data.data)
+
     }
     getCompanies()
   }, [])

@@ -36,12 +36,12 @@ export default function CompanyModal({ open, title, onClose, company, submitForm
   },[companyDomain, companyName, endDate, startDate, updateDate])
 
   useEffect(() => {
-    if (companyName && companyDomain && startDate && endDate) {
+    if (companyName && companyDomain) {
       setIsValidData(true)
     } else {
       setIsValidData(false)
     }
-  }, [companyDomain, companyName, endDate, startDate])
+  }, [companyDomain, companyName])
 
 
   return (
@@ -113,7 +113,7 @@ export default function CompanyModal({ open, title, onClose, company, submitForm
                 <div className="mt-8 flex justify-center px-24">
                   <Button
                     title="提出する"
-                    className="bg-primary-2 disabled:hover:bg-primary-2"
+                    className="bg-primary-2 hover:bg-primary-2"
                     disabled={!isValidData}
                     onClick={submitForm}
                   />
