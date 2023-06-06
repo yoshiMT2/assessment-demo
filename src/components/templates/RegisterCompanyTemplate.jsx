@@ -1,21 +1,35 @@
 import { useState } from 'react'
 import CompanyTable from '../table/companyTable'
 import CompanyModal from '../modal/companyModal'
+import { companyAtom } from '../../utils/atom'
+import { useAtom } from 'jotai'
+import { COMPANY_REGISTER_ENDPOINT } from '../../utils/constants'
 
-const Companies = [
-  { id: 1, name: "丸紅", createdAt: "2022/04/01", startedAt: "2022/05/06", updatedAt: "2023/04/01", endedAt: "2022/08/31", subDomain: "marubeni" },
-  { id: 2, name: "三井物産", createdAt: "2023/01/04", startedAt: "2023/04/01", updatedAt: "", endedAt: "2023/06/30", subDomain: "bussan" },
-]
-
-export default function RegisterCompanyTemplate() {
+// eslint-disable-next-line react/prop-types
+export default function RegisterCompanyTemplate({companies}) {
+  const [formData] = useAtom(companyAtom)
   const [company, setCompany] = useState()
   const [showModal, setShowModal] = useState(false)
-  console.log(company)
+  async function handleSubmit () {
+    const resp = await fetch(COMPANY_REGISTER_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+    const data = await resp.json()
+    console.log(data)
+    if (data.status) {
+      console.log(data.status)
+    }
+  }
+  console.log(formData)
   return (
     <div className='w-full bg-slate-100 overflow-auto px-6'>
       <div className="bg-white px-2 pt-6 mt-6 rounded-lg border">
         <CompanyTable
-          companies={Companies}
+          companies={companies}
           setShowModal={setShowModal}
           setCompanyToEdit={setCompany}
         />
@@ -28,9 +42,9 @@ export default function RegisterCompanyTemplate() {
           msg="必要事項を入力して、提出ボタンを押してください。"
           status="success"
           company={company}
+          submitForm={handleSubmit}
         />
       )}
     </div>
-
   )
 }

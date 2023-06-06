@@ -4,33 +4,46 @@ import { Dialog, Transition } from '@headlessui/react'
 import InputField from '../inputfield'
 import Datepicker from '../datepicker'
 import Button from '../button'
+import { useAtom } from 'jotai'
+import { companyAtom } from '../../utils/atom'
+import { formatFormDate } from '../../utils/formatter'
+
 // eslint-disable-next-line react/prop-types
-export default function CompanyModal({ open, title, onClose, company }) {
+export default function CompanyModal({ open, title, onClose, company, submitForm }) {
+  const [formInfo, setFormInfo] = useAtom(companyAtom)
   const [companyName, setCompanyName] = useState("")
   const [companyDomain, setCompanyDomain] = useState("")
-  const [startDate, setStartDate] = useState()
-  const [endDate, setEndDate] = useState()
-  const [updateDate, setUpdateDate] = useState()
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
+  const [updateDate, setUpdateDate] = useState("")
   const [isValidData, setIsValidData] = useState(false)
 
 
   function clickHandler() {
     onClose(false)
   }
-  console.log(company)
 
   useEffect(() => {
-    if (!company) { return }
-    console.log(company)
-  },[company])
+    const formData = {
+      company_name: companyName,
+      subdomain: companyDomain,
+      subscription_activation_date: formatFormDate(startDate),
+      subscription_inactive_date:formatFormDate(endDate),
+      subscription_update_date:formatFormDate(updateDate)
+    }
+    setFormInfo(formData)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[companyDomain, companyName, endDate, startDate, updateDate])
 
   useEffect(() => {
-    if (companyName, companyDomain, startDate, endDate) {
+    if (companyName && companyDomain && startDate && endDate) {
       setIsValidData(true)
     } else {
       setIsValidData(false)
     }
   }, [companyDomain, companyName, endDate, startDate])
+
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={clickHandler}>
@@ -102,6 +115,7 @@ export default function CompanyModal({ open, title, onClose, company }) {
                     title="提出する"
                     className="bg-primary-2 disabled:hover:bg-primary-2"
                     disabled={!isValidData}
+                    onClick={submitForm}
                   />
                 </div>
               </Dialog.Panel>

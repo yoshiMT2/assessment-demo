@@ -51,7 +51,6 @@ export default function RegisterMemberTemplate() {
   const [selectedAssignMethod, setSelectedAssignMethod] = useState()
   const [selectedType, setSelectedType] = useState()
   const [numOfAssessor, setNumOfAssessor] = useState()
-  // const [members, setMembers] = useState()
   const [teamMembers, setTeamMembers] = useState()
 
   useEffect(() => {
