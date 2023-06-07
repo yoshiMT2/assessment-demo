@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
@@ -10,7 +11,7 @@ import { formatFormDate } from '../../utils/formatter'
 
 // eslint-disable-next-line react/prop-types
 export default function CompanyModal({ open, title, onClose, company, submitForm }) {
-  const [formInfo, setFormInfo] = useAtom(companyAtom)
+  const [, setFormInfo] = useAtom(companyAtom)
   const [companyName, setCompanyName] = useState("")
   const [companyDomain, setCompanyDomain] = useState("")
   const [startDate, setStartDate] = useState("")
@@ -34,6 +35,15 @@ export default function CompanyModal({ open, title, onClose, company, submitForm
     setFormInfo(formData)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[companyDomain, companyName, endDate, startDate, updateDate])
+
+  useEffect(() => {
+    if (!company) { return }
+    setCompanyName(company.company_name)
+    setCompanyDomain(company.subdomain)
+    setStartDate(new Date(company.subscription_activation_date))
+    setEndDate(new Date(company.subscription_inactive_date))
+    setUpdateDate(new Date(company.subscription_update_date))
+  },[company])
 
   useEffect(() => {
     if (companyName && companyDomain) {
@@ -76,7 +86,7 @@ export default function CompanyModal({ open, title, onClose, company, submitForm
                     <Dialog.Title as="h1" className="text-2xl font-bold leading-6 text-gray-900">
                       {title}
                     </Dialog.Title>
-                    <div className="mt-2">
+                    <div className="mt-10">
                     </div>
                     <div className='mt-4'>
                       <div className='text-left font-semibold'>会社名</div>
@@ -110,10 +120,10 @@ export default function CompanyModal({ open, title, onClose, company, submitForm
                     </div>
                   </div>
                 </div>
-                <div className="mt-8 flex justify-center px-24">
+                <div className="mt-8 flex justify-center">
                   <Button
-                    title="提出する"
-                    className="bg-primary-2 hover:bg-primary-2"
+                    title="送信する"
+                    className="bg-primary-2 hover:bg-primary-2 px-28"
                     disabled={!isValidData}
                     onClick={submitForm}
                   />

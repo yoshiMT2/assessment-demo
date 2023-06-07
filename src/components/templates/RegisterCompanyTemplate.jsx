@@ -38,8 +38,8 @@ export default function RegisterCompanyTemplate({companies}) {
         <CompanyModal
           open={showModal}
           onClose={setShowModal}
-          title="会社登録フォーム"
-          msg="必要事項を入力して、提出ボタンを押してください。"
+          title="会社登録・編集フォーム"
+          msg="必要事項を入力して、送信ボタンを押してください。"
           status="success"
           company={company}
           submitForm={handleSubmit}

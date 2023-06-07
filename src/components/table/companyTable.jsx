@@ -5,6 +5,12 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
   function handleCreateButtonClick() {
     setShowModal(true)
   }
+
+  function handleEditButtonClick(company) {
+    setCompanyToEdit(company)
+    setShowModal(true)
+
+  }
   const datePlaceholder =  <span className="text-transparent">xxxx-xx-xx</span>
 
   return (
@@ -82,20 +88,18 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
                     <td className="hidden py-4 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subscription_update_date ? formatDate(company.subscription_update_date) : datePlaceholder}</td>
                     <td className="hidden py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subdomain}</td>
                     <td className="relative py-4 w-1/12 text-left text-sm lg:text-base font-medium">
-                      <a
-                        href="#"
+                      <button
                         className="text-indigo-600 hover:text-indigo-900"
-                        onClick={() => setCompanyToEdit(company)}
+                        onClick={() => handleEditButtonClick(company)}
                       >
-                        編集<span className="sr-only">, {company.name}</span>
-                      </a>
+                        編集
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </div >
