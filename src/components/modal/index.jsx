@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
 // eslint-disable-next-line react/prop-types
-export default function Modal({ open, title, msg, status, onConfirm }) {
+export default function ConfirmationModal({ open, title, msg, status, onConfirm }) {
   function clickHandler() {
     onConfirm()
   }

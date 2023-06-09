@@ -1,25 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import RegisterCompanyTemplate from '../components/templates/RegisterCompanyTemplate'
-import { COMPANY_REGISTER_ENDPOINT } from '../utils/constants'
+import { COMPANY_ENDPOINT } from '../utils/constants'
+import { requestWithTokenRefresh } from '../utils/AuthService'
 
 const ResigterCompany = () => {
   const [companies, setCompanies] = useState()
 
-  useEffect(() => {
-    async function getCompanies() {
-      const resp = await fetch(COMPANY_REGISTER_ENDPOINT)
+  const fetchCompanies = useCallback(async () => {
+    const resp = await requestWithTokenRefresh(COMPANY_ENDPOINT)
       const data = await resp.json()
-      console.log(data.status_code)
       setCompanies(data.data)
+  },[])
 
-    }
-    getCompanies()
-  }, [])
+  useEffect(() => {
+    fetchCompanies()
+  }, [fetchCompanies])
+
   return (
     <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>
       {companies && (
         <RegisterCompanyTemplate
           companies={companies}
+          refreshData={fetchCompanies}
         />
       )}
     </div>)

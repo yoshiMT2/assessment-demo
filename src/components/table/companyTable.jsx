@@ -1,11 +1,15 @@
 // import { CompanyListResponse } from '../../utils/type'
 import { formatDate } from '../../utils/formatter'
+import { useAtom } from 'jotai'
+import { companyAtom } from '../../utils/atom'
 // eslint-disable-next-line react/prop-types
 export default function CompanyTable({ companies, setShowModal, setCompanyToEdit }) {
+  const [, setCompany ] = useAtom(companyAtom)
   function handleCreateButtonClick() {
+    setCompany(null)
     setShowModal(true)
   }
-
+  
   function handleEditButtonClick(company) {
     setCompanyToEdit(company)
     setShowModal(true)

@@ -1,21 +1,15 @@
-import { Fragment, useState, useEffect } from 'react'
-import { Disclosure } from '@headlessui/react'
+import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { userAtom } from '../../utils/atom'
-import { useAtom } from 'jotai'
 import {
-  PlusIcon,
   UserGroupIcon,
   HomeIcon,
   DocumentMinusIcon,
   UserPlusIcon,
   SquaresPlusIcon,
-  Cog8ToothIcon,
   ArrowRightOnRectangleIcon,
-  ChevronDownIcon,
-  ChevronUpIcon
 } from '@heroicons/react/20/solid'
-// import { User } from '../../utils/type'
+import { UseUserDetails } from '../../context/UserContext'
+
 
 const navigation = [
   { name: 'マイページ', href: '/', icon: HomeIcon, current: true },
@@ -23,7 +17,7 @@ const navigation = [
   { name: 'チームの結果を確認', href: '/team', current: false },
   { name: 'メンバー登録・編集', href: '/register/member', current: false },
   { name: '会社登録・編集', href: '/register/company', current: false },
-  { name: 'ログアウト', href: '/logout', current: false },
+  { name: 'ログアウト', href: '/login', current: false },
 ]
 
 const teams = ["A", "B"]
@@ -42,7 +36,7 @@ function classNames(...classes) {
 }
 
 export default function Sidebar() {
-  const [user,] = useAtom(userAtom)
+  const user = UseUserDetails()[0]
   const [menuItems, setMenuItems] = useState(navigation)
   const [menu, setMenu] = useState('HOME')
   const handleMenuItemClick = (itemName) => {
@@ -56,6 +50,10 @@ export default function Sidebar() {
       setMenuItems(navigation)
     }
   }, [user.is_staff])
+
+  function logoutUser() {
+    localStorage.clear()
+  }
 
   return (
     <>
@@ -242,7 +240,7 @@ export default function Sidebar() {
                 <li key={menuItems[5].name}>
                   <NavLink
                     to={menuItems[5].href}
-                    onClick={() => handleMenuItemClick(menuItems[5].name)}
+                    onClick={logoutUser}
                     className='group flex gap-x-3 py-1 text-gray-700 rounded-md text-sm leading-6'
                   >
                     <ArrowRightOnRectangleIcon

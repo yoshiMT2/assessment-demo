@@ -9,7 +9,7 @@ import LoginPage from './pages/LoginPage';
 import ForgotPaswordPage from './pages/ForgotPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import SideNavigationLayout from './components/Layout';
-// import { UserProvider } from "./context/UserContext";
+import { UserProvider } from "./context/UserContext";
 
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
   return (
     <>
       <Router>
-        {/* <UserProvider> */}
+        <UserProvider>
           <Routes>
             <Route path='/login' element={<LoginPage />} />
             <Route path='/forgot' element={<ForgotPaswordPage />} />
@@ -40,8 +40,7 @@ function App() {
               }
             />
           </Routes>
-        {/* </UserProvider> */}
-
+        </UserProvider>
       </Router>
     </>
   )

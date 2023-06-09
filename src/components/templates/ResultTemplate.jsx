@@ -4,7 +4,6 @@ import Toggle from '../toggle'
 
 export default function ResultTemplate() {
   const [showThirdPersonAssessment, setShowThirdPersonAssessment] = useState(true)
-  console.log(showThirdPersonAssessment)
   return (
     <div className='w-full bg-slate-100 overflow-auto'>
       <div className='flex place-content-center'>

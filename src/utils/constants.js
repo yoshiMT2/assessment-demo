@@ -1,9 +1,10 @@
 export const BACKEND_URL =
-    '__env__' in window ? window.__env__.BACKEND_URL : 'https://heartbeatdraft5-production.up.railway.app/';
+    // '__env__' in window ? window.__env__.BACKEND_URL : 'https://heartbeatdraft5-production.up.railway.app/';
+    '__env__' in window ? window.__env__.BACKEND_URL : 'https://heartbeatdraft6auth-production.up.railway.app/';
 
 export const LOGIN_ENDPOINT = BACKEND_URL + 'api/auth/jwt/create/'
 
-export const REFRESH_ENDPOINT = BACKEND_URL + 'auth/jwt/refresh/'
+export const REFRESH_ENDPOINT = BACKEND_URL + 'api/auth/jwt/refresh/'
 
 export const VERIFY_ENDPOINT = BACKEND_URL + 'api/auth/jwt/verify/'
 
@@ -11,7 +12,7 @@ export const  RESET_ENDPOINT = BACKEND_URL + 'api/user/password-reset/'
 
 export const  FORGOT_ENDPOINT = BACKEND_URL + 'api/user/forgot/'
 
-export const COMPANY_REGISTER_ENDPOINT = BACKEND_URL + 'api/company/'
+export const COMPANY_ENDPOINT = BACKEND_URL + 'api/company/'
 
 
 export const QUESTIONS = [

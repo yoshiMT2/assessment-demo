@@ -1,31 +1,31 @@
-// import { createContext, useState, useMemo, useContext } from "react";
+import { createContext, useState, useMemo, useContext } from "react";
 
-// const UserContext = createContext();
+const UserContext = createContext();
 
-// export function UseUserDetails () {
-//   const context = useContext(UserContext)
-//   return context
-// }
-// // eslint-disable-next-line react/prop-types
-// export function UserProvider({ children }) {
-//   const userFromStrage = localStorage.getItem("userDetails")
-//     ? JSON.parse(localStorage.getItem("userDetails"))
-//     : undefined;
+export function UseUserDetails () {
+  const context = useContext(UserContext)
+  return context
+}
+// eslint-disable-next-line react/prop-types
+export function UserProvider({ children }) {
+  const userFromStrage = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : undefined;
 
-//   const [userDetails, setUserDetails] = useState({ ...userFromStrage });
+  const [user, setUser] = useState({ ...userFromStrage });
 
-//   const value = useMemo(() => {
-//     function updateuserDetails() {
-//       setUserDetails(userFromStrage);
-//     }
-//     return [{ ...userDetails }, updateuserDetails];
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [userDetails]);
-//   return (
-//     <UserContext.Provider value={value}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// }
+  const value = useMemo(() => {
+    function updateuserDetails() {
+      setUser(userFromStrage);
+    }
+    return [{ ...user }, updateuserDetails];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+  return (
+    <UserContext.Provider value={value}>
+      {children}
+    </UserContext.Provider>
+  );
+}
 
-// export default UserContext;
+export default UserContext;
