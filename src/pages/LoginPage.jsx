@@ -24,7 +24,7 @@ function LoginPage() {
     try {
       await login(email, password);
       navigate("/");
-      // window.location.reload(false);
+      window.location.reload(false);
     } catch (error) {
       setErrorMessage(error);
       console.log(error)
