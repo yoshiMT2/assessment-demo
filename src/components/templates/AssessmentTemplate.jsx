@@ -1,20 +1,25 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import { MarkedSlider } from '../slider'
-import Dropdown from '../dropdown'
 import Button from '../button'
-import {
-  QUESTIONS,
-  MEMBERS,
-  USER,
-} from '../../utils/constants'
+import { categories } from '../../utils/questions';
 
-export default function AssessmentTemplate() {
 
-  const [options, setOptions] = useState()
-  const [answerArray, setAnswerArray] = useState(
-    QUESTIONS.map(item => ({ id: item.id, answer: 1 })
+export default function AssessmentTemplate({ questions, assessee, user }) {
+  const storageKey = `answersFor${assessee.id}`
+  const savedAnswers = localStorage.getItem(storageKey)
+    ? JSON.parse(localStorage.getItem(storageKey))
+    : undefined;
+  // console.log(savedAnswers)
+
+  const [answerArray, setAnswerArray] = useState(savedAnswers
+    ? savedAnswers
+    : questions.map(item => ({ id: item.id, category: item.category, value: item.value })
     ))
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(answerArray))
+  }, [answerArray, storageKey])
 
   function createAnswerArray(data) {
     if (data) {
@@ -31,21 +36,36 @@ export default function AssessmentTemplate() {
       }
     }
   }
-  useEffect(() => {
-    if (!MEMBERS) { return }
-    const memberPlusMe = [USER, ...MEMBERS]
-    const selection = memberPlusMe.filter(m => m.id === 0 || m.assessor_id === 0)
-    setOptions(selection.map(s => ({ value: s.id, label: s.name })))
-  }, []);
+
+  function handleClick() {
+    const scoreArr = []
+    categories.forEach(c => {
+      const score = answerArray.filter(q => q.category === c)
+      const avg = score.reduce((total, score) => total + score.value, 0) / score.length;
+      scoreArr.push(parseFloat(avg.toFixed(1)))
+    })
+    const payload = {
+      assessorId: user.id,
+      assesseeId: assessee.id,
+      scoreA: scoreArr[0],
+      scoreB: scoreArr[1],
+      scoreC: scoreArr[2],
+      scoreD: scoreArr[3],
+      scoreE: scoreArr[4],
+    }
+    console.log(payload)
+    localStorage.removeItem(storageKey)
+  }
+
 
   return (
     <>
       <div>
         <div className='w-full'>
           <div className='mt-6'>
-            <div className='text-center text-2xl mb-2'>〜 さんのアセスメント</div>
+            <div className='text-center text-2xl mb-2'>{assessee.name} さんのアセスメント</div>
             <ul>
-              {QUESTIONS.map(
+              {answerArray.map(
                 question =>
                   <li
                     key={question.id}
@@ -61,14 +81,11 @@ export default function AssessmentTemplate() {
         <div className='flex justify-center py-6'>
           <Button
             title="提出する"
-            className='w-80
-             bg-cyan-500'
+            className='w-80 bg-cyan-500'
+            onClick={handleClick}
           />
         </div>
-
-
       </div>
-
     </>
   )
 }

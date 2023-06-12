@@ -4,7 +4,7 @@ import { formatDate } from '../../utils/formatter'
 import { useAtom } from 'jotai'
 import { companyAtom } from '../../utils/atom'
 // eslint-disable-next-line react/prop-types
-export default function CompanyTable({ companies, setShowModal, setCompanyToEdit }) {
+export default function TeamTable({ companies, setShowModal, setCompanyToEdit }) {
   const [, setCompany ] = useAtom(companyAtom)
   function handleCreateButtonClick() {
     setCompany(null)
@@ -23,7 +23,7 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-2xl font-semibold leading-6 text-gray-900">会社登録・編集</h1>
+            <h1 className="text-2xl font-semibold leading-6 text-gray-900">チーム登録・編集</h1>
           </div>
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button
@@ -50,7 +50,7 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
                   scope="col"
                   className="hidden py-3.5 w-1/6 text-sm lg:text-base  font-semibold text-gray-900 sm:table-cell"
                 >
-                  会社名
+                  チーム名
                 </th>
                 <th
                   scope="col"
@@ -58,17 +58,8 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
                 >
                   作成日
                 </th>
-                <th scope="col" className="hidden py-3.5 text-sm lg:text-base font-semibold text-gray-900 lg:table-cell">
-                  開始日
-                </th>
-                <th scope="col" className="py-3.5 text-sm lg:text-base font-semibold text-gray-900">
-                  終了日
-                </th>
                 <th scope="col" className="py-3.5 text-sm lg:text-base font-semibold text-gray-900">
                   更新日
-                </th>
-                <th scope="col" className="py-3.5 w-1/6 text-sm lg:text-base font-semibold text-gray-900">
-                  サブドメイン名
                 </th>
                 <th scope="col" className="relative py-3.5 w-1/12">
                   <span className=""></span>
@@ -88,10 +79,7 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
                     </td>
                     <td className="hidden py-4 w-1/6 text-sm lg:text-base text-gray-500 sm:table-cell">{company.company_name}</td>
                     <td className="hidden py-4 text-sm lg:text-base text-gray-500 lg:table-cell">{formatDate(company.company_creation_date)}</td>
-                    <td className="hidden py-4 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subscription_activation_date ? formatDate(company.subscription_activation_date) : datePlaceholder}</td>
-                    <td className="hidden py-4 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subscription_inactive_date ? formatDate(company.subscription_inactive_date) : datePlaceholder}</td>
                     <td className="hidden py-4 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subscription_update_date ? formatDate(company.subscription_update_date) : datePlaceholder}</td>
-                    <td className="hidden py-4 w-1/6 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subdomain}</td>
                     <td className="relative py-4 w-1/12 text-left text-sm lg:text-base font-medium">
                       <button
                         className="text-indigo-600 hover:text-indigo-900"

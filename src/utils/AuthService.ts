@@ -1,12 +1,11 @@
-import { tokenAtom, userAtom } from './atom';
+// import { tokenAtom, userAtom } from './atom';
 import { getCookie } from "./cookies";
-import { useAtom } from 'jotai';
 import jwt_decode from 'jwt-decode';
-import { LOGIN_ENDPOINT, FORGOT_ENDPOINT, REFRESH_ENDPOINT, RESET_ENDPOINT, BACKEND_URL } from "./constants";
-import { Token, Decoded, User } from './type'
+import { useNavigate } from 'react-router';
+import { LOGIN_ENDPOINT, REFRESH_ENDPOINT, BACKEND_URL } from "./constants";
+import { Decoded, User } from './type'
 
 export const useLogin = () => {
-
   const csrftoken = getCookie("csrftoken");
   const login = async (email, password) => {
     const requestOptions = {
@@ -36,14 +35,9 @@ export const useLogin = () => {
   return { login }
 }
 
-export const resetPassword = async (resetkey, newPassword) => {
-  const payload = { "reset_secret": resetkey, "password": newPassword };
-  const resp = await fetch(RESET_ENDPOINT);
-  return resp;
-};
-
 
 async function refreshToken(token) {
+  const navigate = useNavigate()
   const response = await fetch(REFRESH_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -57,12 +51,13 @@ async function refreshToken(token) {
     localStorage.setItem("token", JSON.stringify(newToken))
     return refreshedToken.access
   } else if (response.status === 401) {
-    window.location.href = '/login';
+    navigate('/login')
     return null
   }
 }
 
 export const requestWithTokenRefresh = async (url, options = {}) => {
+  const navigate = useNavigate()
   const tokenFromStorage = localStorage.getItem("token")
   const token = tokenFromStorage ? JSON.parse(tokenFromStorage) : null
   let response;
@@ -75,7 +70,7 @@ export const requestWithTokenRefresh = async (url, options = {}) => {
       }
     });
   } else {
-    window.location.href = '/login';
+    navigate("/login");
   }
   if (response.status === 401) {
     const newToken = await refreshToken(token);

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Assesment from './pages/AssessmentPage';
 import Home from './pages/HomePage';
 import RegisterMember from './pages/RegisterMemberPage';
+import RegisterTeam from './pages/RegisterTeamPage'
 import RegisterCompany from './pages/RegisterCompanyPage';
 import Result from './pages/ResultPage';
 import Team from './pages/TeamPage';
@@ -21,7 +22,7 @@ function App() {
           <Routes>
             <Route path='/login' element={<LoginPage />} />
             <Route path='/forgot' element={<ForgotPaswordPage />} />
-            <Route path="/reset">
+            <Route path="/password/reset">
               <Route path=":resetkey" element={<ResetPasswordPage />}/>
             </Route>
             <Route
@@ -34,6 +35,7 @@ function App() {
                     <Route path='/result' element={<Result />} />
                     <Route path='/team' element={<Team />} />
                     <Route path='/register/member' element={<RegisterMember />} />
+                    <Route path='/register/team' element={<RegisterTeam />} />
                     <Route path='/register/company' element={<RegisterCompany />} />
                   </Routes>
                 </SideNavigationLayout>

@@ -8,9 +8,9 @@ export const REFRESH_ENDPOINT = BACKEND_URL + 'api/auth/jwt/refresh/'
 
 export const VERIFY_ENDPOINT = BACKEND_URL + 'api/auth/jwt/verify/'
 
-export const  RESET_ENDPOINT = BACKEND_URL + 'api/user/password-reset/'
+export const  RESET_ENDPOINT = BACKEND_URL + 'api/password/reset/?'
 
-export const  FORGOT_ENDPOINT = BACKEND_URL + 'api/user/forgot/'
+export const  FORGOT_ENDPOINT = BACKEND_URL + 'api/password/forgot/'
 
 export const COMPANY_ENDPOINT = BACKEND_URL + 'api/company/'
 

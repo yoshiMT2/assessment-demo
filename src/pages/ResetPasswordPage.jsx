@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { resetPassword } from '../utils/AuthService';
 import Loader from '../components/loader';
 import Modal from '../components/modal';
 import Button from '../components/button';
-import InputField from '../components/inputfield';
+import { RESET_ENDPOINT } from '../utils/constants';
 
 function ResetPasswordPage() {
   const { resetkey } = useParams()
@@ -30,7 +29,13 @@ function ResetPasswordPage() {
   const sendResetPasswordRequest = async () => {
     setIsWaiting(true)
     try {
-      const res = await resetPassword(resetkey, password);
+      const res = await fetch(RESET_ENDPOINT + resetkey, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({password: password}),
+      })
       if (res.status === 200) {
         setResponseStatus("success")
         setModalTitle("パスワード再設定が完了しました")

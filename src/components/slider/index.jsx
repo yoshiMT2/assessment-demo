@@ -5,8 +5,6 @@ import 'rc-slider/assets/index.css';
 import './slider.css'
 
 export const MarkedSlider = ({question, setAnswer}) => {
-// export const MarkedSlider = () => {
-  // const [value, setValue] = useState()
   const marks = {
     1: '全く思わない',
     2: '思わない',
@@ -15,12 +13,9 @@ export const MarkedSlider = ({question, setAnswer}) => {
   };
   function handleOnChange(value) {
     if (question) {
-      setAnswer({id: question.id, answer: value})
+      setAnswer({id: question.id, category: question.category, value: value})
     }
   }
-  // function handleOnChange (value) {
-  //   console.log(value)
-  // }
   return (
     <>
       <div>
@@ -30,8 +25,9 @@ export const MarkedSlider = ({question, setAnswer}) => {
           marks={marks}
           dots
           step={null}
+          value={question.value}
           onChange={handleOnChange}
-          defaultValue={1} />
+        />
       </div>
     </>
   )

@@ -5,6 +5,7 @@ import {
   HomeIcon,
   DocumentMinusIcon,
   UserPlusIcon,
+  UsersIcon,
   SquaresPlusIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/react/20/solid'
@@ -16,19 +17,9 @@ const navigation = [
   { name: 'アセスメント結果を確認', href: '/result', current: false },
   { name: 'チームの結果を確認', href: '/team', current: false },
   { name: 'メンバー登録・編集', href: '/register/member', current: false },
+  { name: 'チーム登録・編集', href: '/register/team', current: false },
   { name: '会社登録・編集', href: '/register/company', current: false },
   { name: 'ログアウト', href: '/login', current: false },
-]
-
-const teams = ["A", "B"]
-
-const teamMembers = [
-  { team: "A", name: "メンバー1" },
-  { team: "A", name: "メンバー2" },
-  { team: "A", name: "メンバー3" },
-  { team: "B", name: "メンバー4" },
-  { team: "B", name: "メンバー5" },
-  { team: "B", name: "メンバー6" },
 ]
 
 function classNames(...classes) {
@@ -38,7 +29,7 @@ function classNames(...classes) {
 export default function Sidebar() {
   const user = UseUserDetails()[0]
   const [menuItems, setMenuItems] = useState(navigation)
-  const [menu, setMenu] = useState('HOME')
+  const [menu, setMenu] = useState('マイページ')
   const handleMenuItemClick = (itemName) => {
     setMenu(itemName)
   }
@@ -106,71 +97,6 @@ export default function Sidebar() {
                   </NavLink>
                 </li>
                 <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                {/* <li key={menuItems[2].name}>
-                  <Disclosure
-                    as="div"
-                    className=""
-                    onClick={() => handleMenuItemClick(menuItems[2].name)}
-                  >
-                    {({ open }) => (
-                      <>
-                        <div className="flow-root">
-                          <Disclosure.Button
-                            className={classNames(
-                              menuItems[2].name === menu
-                                ? ' text-primary-2 font-bold'
-                                : 'text-gray-700',
-                              'group grid grid-cols-3 py-1 rounded-md text-sm items-center'
-                            )}
-                          >
-                            <div className="flex items-center col-span-2">
-                              <UserGroupIcon
-                                className={classNames(
-                                  menuItems[2].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
-                                  'h-6 w-6 shrink-0'
-                                )}
-                                aria-hidden="true"
-                              />
-                              <div className='ml-3 whitespace-nowrap'>
-                                {menuItems[2].name}
-                              </div>
-                            </div>
-                            <div className="justify-self-end">
-                              {open ? (
-                                <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
-                              ) : (
-                                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
-                              )}
-                            </div>
-                          </Disclosure.Button>
-                        </div>
-
-                        <Disclosure.Panel className="pt-2">
-                          <div className="space-y-4">
-                            {teams.map((team, idx) => (
-                              <NavLink
-                                key={idx}
-                                to={`/result/team/${teams[idx]}`}
-                                onClick={() => handleMenuItemClick(teams[idx])}
-                                className={classNames(
-                                  teams[idx] === menu
-                                    ? ' text-primary-2 font-bold'
-                                    : 'text-gray-700',
-                                  'group flex ml-10 gap-x-3 rounded-md text-sm leading-6'
-                                )}
-                              >
-                                <div>
-                                  {teams[idx]}
-                                </div>
-                              </NavLink>
-                            ))}
-                          </div>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                  <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                </li> */}
                 <li key={menuItems[2].name}>
                   <NavLink
                     to={menuItems[2].href}
@@ -226,7 +152,7 @@ export default function Sidebar() {
                       'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
                     )}
                   >
-                    <SquaresPlusIcon
+                    <UsersIcon
                       className={classNames(
                         menuItems[4].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
                         'h-6 w-6 shrink-0'
@@ -240,6 +166,28 @@ export default function Sidebar() {
                 <li key={menuItems[5].name}>
                   <NavLink
                     to={menuItems[5].href}
+                    onClick={() => handleMenuItemClick(menuItems[5].name)}
+                    className={classNames(
+                      menuItems[5].name === menu
+                        ? ' text-primary-2 font-bold'
+                        : 'text-gray-700',
+                      'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
+                    )}
+                  >
+                    <SquaresPlusIcon
+                      className={classNames(
+                        menuItems[5].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
+                        'h-6 w-6 shrink-0'
+                      )}
+                      aria-hidden="true"
+                    />
+                    {menuItems[5].name}
+                  </NavLink>
+                  <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                </li>
+                <li key={menuItems[6].name}>
+                  <NavLink
+                    to={menuItems[6].href}
                     onClick={logoutUser}
                     className='group flex gap-x-3 py-1 text-gray-700 rounded-md text-sm leading-6'
                   >
@@ -247,7 +195,7 @@ export default function Sidebar() {
                       className='h-6 w-6 shrink-0 group-hover:text-gray-500'
                       aria-hidden="true"
                     />
-                    {menuItems[5].name}
+                    {menuItems[6].name}
                   </NavLink>
                 </li>
               </ul>

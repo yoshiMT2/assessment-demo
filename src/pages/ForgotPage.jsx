@@ -4,7 +4,7 @@ import Loader from '../components/loader';
 import Button from '../components/button';
 import InputField from '../components/inputfield';
 import Modal from '../components/modal';
-import { RESET_ENDPOINT } from '../utils/constants';
+import { FORGOT_ENDPOINT } from '../utils/constants';
 
 function ForgotPasswordPage() {
   const navigate = useNavigate()
@@ -15,8 +15,6 @@ function ForgotPasswordPage() {
   const [showModal, setShowModal] = useState(false)
   const [modalTitle, setModalTitle] = useState("")
   const [modalMsg, setModalMsg] = useState("")
-
-
 
   useEffect(() => {
     if (formEmail) {
@@ -36,8 +34,7 @@ function ForgotPasswordPage() {
         },
         body: JSON.stringify({ email: formEmail })
       };
-      const res = await fetch(RESET_ENDPOINT, requestOptions);
-      const data = await res.json()
+      const res = await fetch(FORGOT_ENDPOINT, requestOptions);
       if (res.status === 200) {
         setResponseStatus("success")
         setModalTitle("パスワード再設定のリンクが送信されました")
@@ -68,7 +65,7 @@ function ForgotPasswordPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-indigo-100">
       <form
-        className="p-10 bg-white w-96 rounded-xl drop-shadow-xl space-y-5"
+        className="flex flex-col items-center p-10 bg-white w-96 rounded-xl drop-shadow-xl space-y-5"
         onSubmit={submitHandler}
       >
         <p className="text-center text-sm">登録しているメールアドレスを入力してください</p>
@@ -76,12 +73,13 @@ function ForgotPasswordPage() {
           type="email"
           label="Email"
           value={formEmail}
+          className="w-80"
           onChange={(e) => setFormEmail(e.target.value)}
         />
         <Button
           title="Reset Password"
           disabled={!buttonEnabled}
-          className="bg-indigo-600"
+          className="bg-indigo-600 w-80"
         />
       </form>
       {isWaiting ? (

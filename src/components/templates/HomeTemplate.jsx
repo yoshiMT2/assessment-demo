@@ -1,8 +1,16 @@
 import { NavLink } from 'react-router-dom';
 import Button from '../button';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+import { UseUserDetails } from '../../context/UserContext';
+import { useAtom } from 'jotai';
+import { assesseeAtom } from '../../utils/atom';
 
 export default function HomeTemplate() {
+  const user = UseUserDetails()[0]
+  const [, setAssessee] = useAtom(assesseeAtom)
+  function setSelfAssessment() {
+    setAssessee({id: user.id, name: user.name})
+  }
   return (
     <>
       <div className='w-full flex-col justify-center bg-slate-100 overflow-auto'>
@@ -20,6 +28,7 @@ export default function HomeTemplate() {
               <Button
                 title="アセスメントを実施する"
                 className='my-10 md:w-96'
+                onClick={setSelfAssessment}
               />
             </NavLink>
             </div>
