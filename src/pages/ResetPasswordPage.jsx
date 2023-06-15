@@ -29,12 +29,12 @@ function ResetPasswordPage() {
   const sendResetPasswordRequest = async () => {
     setIsWaiting(true)
     try {
-      const res = await fetch(RESET_ENDPOINT + resetkey, {
+      const res = await fetch(RESET_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({password: password}),
+        body: JSON.stringify({reset_secret:resetkey, password: password}),
       })
       if (res.status === 200) {
         setResponseStatus("success")
@@ -42,7 +42,7 @@ function ResetPasswordPage() {
         setModalMsg("ログインページよりログインを行ってください")
         setIsWaiting(false)
         setShowModal(true)
-      }
+      } 
     } catch (error) {
       setResponseStatus("failed")
       setModalTitle("予期せぬエラーが起きました")

@@ -2,19 +2,18 @@
 // import { CompanyListResponse } from '../../utils/type'
 import { formatDate } from '../../utils/formatter'
 import { useAtom } from 'jotai'
-import { companyAtom } from '../../utils/atom'
+import { formAtom } from '../../utils/atom'
 // eslint-disable-next-line react/prop-types
 export default function CompanyTable({ companies, setShowModal, setCompanyToEdit }) {
-  const [, setCompany ] = useAtom(companyAtom)
+  const [, setFormData ] = useAtom(formAtom)
   function handleCreateButtonClick() {
-    setCompany(null)
+    setFormData(null)
     setShowModal(true)
   }
 
   function handleEditButtonClick(company) {
     setCompanyToEdit(company)
     setShowModal(true)
-
   }
   const datePlaceholder =  <span className="text-transparent">xxxx-xx-xx</span>
 
@@ -76,7 +75,7 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
               </tr>
             </thead>
           </table>
-          <div className="h-[400px] overflow-y-auto">
+          <div className="h-[400px] overflow-y-auto overflow-x-hidden">
             <table className="w-full text-center">
               <tbody >
                 {companies.map((company, index) => (

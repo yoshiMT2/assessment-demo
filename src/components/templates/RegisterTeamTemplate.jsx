@@ -1,16 +1,18 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import TeamTable from '../table/teamTable'
-import CompanyModal from '../modal/companyModal'
+import TeamModal from '../modal/teamModal'
 import ConfirmationModal from '../modal'
-import { companyAtom } from '../../utils/atom'
+import { formAtom } from '../../utils/atom'
 import { useAtom } from 'jotai'
-import { COMPANY_ENDPOINT } from '../../utils/constants'
+import { TEAM_ENDPOINT } from '../../utils/constants'
 import { requestWithTokenRefresh } from '../../utils/AuthService'
 
 // eslint-disable-next-line react/prop-types
-export default function RegisterTeamTemplate({ companies, refreshData }) {
-  const [formData,] = useAtom(companyAtom)
-  const [company, setCompany] = useState()
+export default function RegisterTeamTemplate({ teams, companyId ,refreshData }) {
+  const navigate = useNavigate()
+  const [formData, ] = useAtom(formAtom)
+  const [team, setTeam] = useState()
   const [status, setStatus] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -18,15 +20,15 @@ export default function RegisterTeamTemplate({ companies, refreshData }) {
 
   async function handleSubmit() {
     setIsLoading(true)
-    const url = company ? COMPANY_ENDPOINT + company.id : COMPANY_ENDPOINT
-    const method = company ? 'PATCH' : 'POST'
+    const url = team ? TEAM_ENDPOINT + 'update/' + team.id : TEAM_ENDPOINT + 'create/'
+    const method = team ? 'PATCH' : 'POST'
     const resp = await requestWithTokenRefresh(url, {
       method: method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData),
-    })
+      body: JSON.stringify([formData]),
+    }, navigate)
     if (resp.status === 200 || resp.status === 201) {
       setStatus("success")
     } else {
@@ -46,18 +48,19 @@ export default function RegisterTeamTemplate({ companies, refreshData }) {
     <div className='w-full bg-slate-100 overflow-auto px-6'>
       <div className="bg-white px-2 pt-6 mt-6 rounded-lg border z-10">
         <TeamTable
-          companies={companies}
+          teams={teams}
           setShowModal={setShowModal}
-          setCompanyToEdit={setCompany}
+          setCompanyToEdit={setTeam}
         />
       </div>
       {showModal && (
-        <CompanyModal
+        <TeamModal
           open={showModal}
           onClose={setShowModal}
           title="チーム登録・編集フォーム"
           msg="必要事項を入力して、送信ボタンを押してください。"
-          company={company}
+          team={team}
+          companyId={companyId}
           loading={isLoading}
           submitForm={handleSubmit}
         />

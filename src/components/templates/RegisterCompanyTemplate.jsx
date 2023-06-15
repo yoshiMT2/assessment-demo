@@ -2,14 +2,14 @@ import { useState } from 'react'
 import CompanyTable from '../table/companyTable'
 import CompanyModal from '../modal/companyModal'
 import ConfirmationModal from '../modal'
-import { companyAtom } from '../../utils/atom'
+import { formAtom } from '../../utils/atom'
 import { useAtom } from 'jotai'
 import { COMPANY_ENDPOINT } from '../../utils/constants'
 import { requestWithTokenRefresh } from '../../utils/AuthService'
 
 // eslint-disable-next-line react/prop-types
 export default function RegisterCompanyTemplate({ companies, refreshData }) {
-  const [formData,] = useAtom(companyAtom)
+  const [formData,] = useAtom(formAtom)
   const [company, setCompany] = useState()
   const [status, setStatus] = useState()
   const [isLoading, setIsLoading] = useState(false)

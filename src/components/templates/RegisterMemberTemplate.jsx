@@ -31,8 +31,9 @@ const Members = [
   { company_id: 2, team_id: 6, member_id: 12, name: "遠藤保仁", email: "y-endo@sjr.com", role: "一般", teams: ["海外事業部"], isActive: true },
 ]
 const RegistrationMethods = [
-  { value: 1, label: "CSV" },
-  { value: 2, label: "画面上" },
+  { value: 1, label: "画面上" },
+  { value: 2, label: "CSV" },
+  { value: 3, label: "第三者評価者" },
 ]
 const AssignMethods = [
   { value: 1, label: "ランダムで設定" },
@@ -47,7 +48,7 @@ export default function RegisterMemberTemplate() {
   const [selectedCompany, setSelectedCompany] = useState()
   const [teamOptions, setTeamOptions] = useState()
   const [selectedTeam, setSelectedTeam] = useState()
-  const [selectedMethod, setSelectedMethod] = useState()
+  const [selectedMethod, setSelectedMethod] = useState(RegistrationMethods[0])
   const [selectedAssignMethod, setSelectedAssignMethod] = useState()
   const [selectedType, setSelectedType] = useState()
   const [numOfAssessor, setNumOfAssessor] = useState()
@@ -59,7 +60,6 @@ export default function RegisterMemberTemplate() {
     const options = teams.map(t => ({ value: t.team_id, label: t.team_name }))
     setTeamOptions(options)
     setSelectedTeam(null)
-    setSelectedMethod(null)
   }, [selectedCompany])
 
   useEffect(() => {
@@ -67,13 +67,17 @@ export default function RegisterMemberTemplate() {
       setTeamMembers(null)
       return
     }
-    if (selectedMethod.value === 2) {
+    if (selectedMethod.value === 1) {
       const members = Members.filter(m => m.team_id === selectedTeam.value)
       setTeamMembers(members)
     } else {
       setTeamMembers(null)
     }
   }, [selectedTeam, selectedMethod])
+
+  useEffect(() => {
+
+  }, [])
 
   return (
     <div className='w-full bg-slate-100 overflow-auto'>
@@ -83,6 +87,7 @@ export default function RegisterMemberTemplate() {
             <div className='mb-2'>会社を選択</div>
             <Dropdown
               options={Companies}
+              placeholder="全会社"
               selectedOption={selectedCompany}
               setSelectedOption={setSelectedCompany}
             />
@@ -91,21 +96,20 @@ export default function RegisterMemberTemplate() {
             <div className='mb-2'>チームを選択</div>
             <Dropdown
               options={teamOptions}
+              placeholder="全チーム"
               selectedOption={selectedTeam}
               setSelectedOption={setSelectedTeam}
             />
           </div>
-          {selectedTeam && (
-            <div className='w-32 ml-6 mt-4 z-20'>
-              <div className='mb-2 whitespace-nowrap'>登録・編集方法</div>
-              <Dropdown
-                options={RegistrationMethods}
-                selectedOption={selectedMethod}
-                setSelectedOption={setSelectedMethod}
-              />
-            </div>
-          )}
-          {selectedMethod && selectedMethod.value === 1 && (
+          <div className='w-32 ml-6 mt-4 z-20'>
+            <div className='mb-2 whitespace-nowrap'>登録・編集方法</div>
+            <Dropdown
+              options={RegistrationMethods}
+              selectedOption={selectedMethod}
+              setSelectedOption={setSelectedMethod}
+            />
+          </div>
+          {selectedMethod && selectedMethod.value === 2 && (
             <div className='w-32 ml-6 mt-4 z-20'>
               <div className='mb-2'>種別</div>
               <Dropdown
@@ -115,7 +119,7 @@ export default function RegisterMemberTemplate() {
               />
             </div>
           )}
-          {selectedMethod && selectedMethod.value === 1 && (
+          {selectedMethod && selectedMethod.value === 3 && (
             <div className='w-36 ml-6 mt-4 z-20'>
               <div className='mb-2 whitespace-nowrap'>第三者評価者の設定</div>
               <Dropdown
@@ -125,7 +129,7 @@ export default function RegisterMemberTemplate() {
               />
             </div>
           )}
-          {selectedAssignMethod && selectedAssignMethod.value === 1 && selectedMethod.value === 1 && (
+          {selectedAssignMethod && (
             <div className='ml-6 mt-4 w-52'>
               <div className='mb-2 '>アサイン人数</div>
               <div className='flex h-10 items-center'>
@@ -141,7 +145,7 @@ export default function RegisterMemberTemplate() {
             </div>
           )}
         </div>
-        {selectedMethod && selectedType && selectedAssignMethod && selectedMethod.value === 1 && (
+        {selectedMethod && selectedType && selectedMethod.value === 2 && (
           <div className='flex mt-6 mr-10 justify-center gap-20'>
             <div className='text-center'>
               <div>CSVダウンロード</div>
@@ -160,7 +164,7 @@ export default function RegisterMemberTemplate() {
           </div>
         )}
         {teamMembers && (
-          <div className={`bg-white px-2 pt-6 ${selectedMethod.value===1 ? "mt-6" : "mt-16"} rounded-lg border`}>
+          <div className={`bg-white px-2 pt-6 ${selectedMethod.value === 1 ? "mt-6" : "mt-16"} rounded-lg border`}>
             <MemberTable teamName={selectedTeam.label} members={teamMembers} />
           </div>
         )}

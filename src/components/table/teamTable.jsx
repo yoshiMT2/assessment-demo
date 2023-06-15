@@ -1,22 +1,20 @@
 /* eslint-disable react/prop-types */
 // import { CompanyListResponse } from '../../utils/type'
-import { formatDate } from '../../utils/formatter'
 import { useAtom } from 'jotai'
-import { companyAtom } from '../../utils/atom'
+import { formAtom } from '../../utils/atom'
 // eslint-disable-next-line react/prop-types
-export default function TeamTable({ companies, setShowModal, setCompanyToEdit }) {
-  const [, setCompany ] = useAtom(companyAtom)
+export default function TeamTable({ teams, setShowModal, setTeamToEdit }) {
+  const [,setFormData] = useAtom(formAtom)
   function handleCreateButtonClick() {
-    setCompany(null)
+    setFormData(null)
     setShowModal(true)
   }
 
-  function handleEditButtonClick(company) {
-    setCompanyToEdit(company)
+  function handleEditButtonClick(team) {
+    setTeamToEdit(team)
     setShowModal(true)
 
   }
-  const datePlaceholder =  <span className="text-transparent">xxxx-xx-xx</span>
 
   return (
     <div>
@@ -48,42 +46,32 @@ export default function TeamTable({ companies, setShowModal, setCompanyToEdit })
                 </th>
                 <th
                   scope="col"
-                  className="hidden py-3.5 w-1/6 text-sm lg:text-base  font-semibold text-gray-900 sm:table-cell"
+                  className="hidden py-3.5 w-5/6 text-sm lg:text-base  font-semibold text-gray-900 sm:table-cell"
                 >
                   チーム名
                 </th>
-                <th
-                  scope="col"
-                  className="hidden py-3.5 text-sm lg:text-base font-semibold text-gray-900 md:table-cell"
-                >
-                  作成日
-                </th>
-                <th scope="col" className="py-3.5 text-sm lg:text-base font-semibold text-gray-900">
-                  更新日
-                </th>
+
                 <th scope="col" className="relative py-3.5 w-1/12">
                   <span className=""></span>
                 </th>
               </tr>
             </thead>
           </table>
-          <div className="h-[400px] overflow-y-auto">
-            <table className="w-full text-center">
+          <div className="h-[400px] overflow-y-auto overflow-x-hidden">
+            <table className="text-center w-full">
               <tbody >
-                {companies.map((company, index) => (
+                {teams && teams.map((team, index) => (
                   <tr key={index} >
                     <td className="relative py-4 w-1/12 text-sm lg:text-base font-medium text-gray-900">
-                      {company.id}
+                      {team.id}
                       <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
                       <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
                     </td>
-                    <td className="hidden py-4 w-1/6 text-sm lg:text-base text-gray-500 sm:table-cell">{company.company_name}</td>
-                    <td className="hidden py-4 text-sm lg:text-base text-gray-500 lg:table-cell">{formatDate(company.company_creation_date)}</td>
-                    <td className="hidden py-4 text-sm lg:text-base text-gray-500 lg:table-cell">{company.subscription_update_date ? formatDate(company.subscription_update_date) : datePlaceholder}</td>
+                    <td className="hidden py-4 w-5/6 text-sm lg:text-base text-gray-500 sm:table-cell">{team.team_name}</td>
                     <td className="relative py-4 w-1/12 text-left text-sm lg:text-base font-medium">
                       <button
                         className="text-indigo-600 hover:text-indigo-900"
-                        onClick={() => handleEditButtonClick(company)}
+                        onClick={() => handleEditButtonClick(team)}
                       >
                         編集
                       </button>

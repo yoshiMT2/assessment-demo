@@ -14,6 +14,10 @@ export const  FORGOT_ENDPOINT = BACKEND_URL + 'api/password/forgot/'
 
 export const COMPANY_ENDPOINT = BACKEND_URL + 'api/company/'
 
+export const TEAM_ENDPOINT = BACKEND_URL + 'api/team/'
+
+
+
 
 export const QUESTIONS = [
   { id: 1, text: "このチームでは私の失敗が非難されがちだ" },

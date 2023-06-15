@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { dropboxStyles } from './style';
 
 
-export default function Dropdown ({ options, selectedOption, setSelectedOption }){
+export default function Dropdown ({ options, placeholder, selectedOption, setSelectedOption }){
 
   const handleChange = (value) => {
     setSelectedOption(value);
@@ -16,7 +16,7 @@ export default function Dropdown ({ options, selectedOption, setSelectedOption }
         value={selectedOption}
         onChange={handleChange}
         options={options}
-        placeholder="要選択"
+        placeholder={placeholder}
         isSearchable={false}
       />
     </div>

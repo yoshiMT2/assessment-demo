@@ -1,29 +1,34 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router'
 import RegisterTeamTemplate from '../components/templates/RegisterTeamTemplate'
-import { COMPANY_ENDPOINT } from '../utils/constants'
+import { TEAM_ENDPOINT } from '../utils/constants'
 import { requestWithTokenRefresh } from '../utils/AuthService'
+import { UseUserDetails } from '../context/UserContext'
 
 const ResigterTeam = () => {
-  const [companies, setCompanies] = useState()
+  const navigate = useNavigate()
+  const user = UseUserDetails()[0]
+  const [teams, setTeams] = useState()
 
-  const fetchCompanies = useCallback(async () => {
-    const resp = await requestWithTokenRefresh(COMPANY_ENDPOINT)
+  const fetchTeams = useCallback(async () => {
+    const resp = await requestWithTokenRefresh(TEAM_ENDPOINT + 'list', {}, navigate)
       const data = await resp.json()
-      setCompanies(data.data)
-  },[])
+      setTeams(data)
+  },[navigate])
 
   useEffect(() => {
-    fetchCompanies()
-  }, [fetchCompanies])
+    fetchTeams()
+  }, [fetchTeams])
 
   return (
     <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>
-      {companies && (
+      {/* {teams && ( */}
         <RegisterTeamTemplate
-          companies={companies}
-          refreshData={fetchCompanies}
+          teams={teams}
+          companyId={user.company_relation.id}
+          refreshData={fetchTeams}
         />
-      )}
+      {/* )} */}
     </div>)
 }
 

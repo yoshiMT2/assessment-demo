@@ -6,13 +6,13 @@ import InputField from '../inputfield'
 import Datepicker from '../datepicker'
 import Button from '../button'
 import { useAtom } from 'jotai'
-import { companyAtom } from '../../utils/atom'
+import { formAtom } from '../../utils/atom'
 import { formatFormDate } from '../../utils/formatter'
 import Loader from '../loader'
 
 // eslint-disable-next-line react/prop-types
 export default function CompanyModal({ open, title, onClose, company, submitForm, loading }) {
-  const [, setFormInfo] = useAtom(companyAtom)
+  const [, setFormData] = useAtom(formAtom)
   const [companyName, setCompanyName] = useState("")
   const [companyDomain, setCompanyDomain] = useState("")
   const [startDate, setStartDate] = useState("")
@@ -33,7 +33,7 @@ export default function CompanyModal({ open, title, onClose, company, submitForm
       subscription_inactive_date: formatFormDate(endDate),
       subscription_update_date: formatFormDate(updateDate)
     }
-    setFormInfo(formData)
+    setFormData(formData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [companyDomain, companyName, endDate, startDate, updateDate])
 

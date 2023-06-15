@@ -1,7 +1,6 @@
 // import { tokenAtom, userAtom } from './atom';
 import { getCookie } from "./cookies";
 import jwt_decode from 'jwt-decode';
-import { useNavigate } from 'react-router';
 import { LOGIN_ENDPOINT, REFRESH_ENDPOINT, BACKEND_URL } from "./constants";
 import { Decoded, User } from './type'
 
@@ -36,8 +35,8 @@ export const useLogin = () => {
 }
 
 
-async function refreshToken(token) {
-  const navigate = useNavigate()
+export async function refreshToken(token, navigate) {
+  // const navigate = useNavigate()
   const response = await fetch(REFRESH_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -56,8 +55,7 @@ async function refreshToken(token) {
   }
 }
 
-export const requestWithTokenRefresh = async (url, options = {}) => {
-  const navigate = useNavigate()
+export const requestWithTokenRefresh = async (url, options = {}, navigate) => {
   const tokenFromStorage = localStorage.getItem("token")
   const token = tokenFromStorage ? JSON.parse(tokenFromStorage) : null
   let response;
@@ -71,9 +69,10 @@ export const requestWithTokenRefresh = async (url, options = {}) => {
     });
   } else {
     navigate("/login");
+    return null;
   }
   if (response.status === 401) {
-    const newToken = await refreshToken(token);
+    const newToken = await refreshToken(token, navigate);
     if (newToken) {
       response = await fetch(url, {
         ...options,
@@ -82,6 +81,9 @@ export const requestWithTokenRefresh = async (url, options = {}) => {
           'Authorization': 'JWT ' + newToken,
         }
       });
+    } else {
+      navigate("/login");
+      return null;
     }
   }
   return response;

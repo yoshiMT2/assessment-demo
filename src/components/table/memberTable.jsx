@@ -52,7 +52,7 @@ export default function MemberTable({ teamName, members }) {
               </tr>
             </thead>
           </table>
-          <div className="h-[400px] overflow-y-auto">
+          <div className="h-[400px] overflow-y-auto overflow-x-hidden">
             <table className="w-full w- text-center">
               <tbody >
                 {members.map((person, index) => (
