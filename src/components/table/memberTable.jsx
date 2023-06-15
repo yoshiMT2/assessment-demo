@@ -3,7 +3,7 @@
 export default function MemberTable({ teamName, members }) {
   return (
     <div>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
             <h1 className="text-2xl font-semibold leading-6 text-gray-900">{teamName} </h1>
@@ -19,7 +19,7 @@ export default function MemberTable({ teamName, members }) {
         </div>
       </div>
       <div className="mt-2 flow-root overflow-hidden">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto">
           <table className="w-full text-center">
             <thead className="sticky top-0 bg-white shadow z-10">
               <tr>
@@ -62,17 +62,19 @@ export default function MemberTable({ teamName, members }) {
                       <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
                       <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
                     </td>
-                    <td className="hidden px-3 py-4 w-1/12 text-sm lg:text-base text-gray-500 sm:table-cell">{person.role}</td>
-                    {person.teams && (
-                      <td className="hidden px-3 py-4 w-1/4 text-sm lg:text-base text-gray-500 md:table-cell">
-                        {person.teams.map((team, idx) => (
-                          <span key={idx}>{team} </span>
-                        ))}
-                      </td>
-                    )}
-                    <td className="hidden px-3 py-4 w-1/4 text-sm lg:text-base text-gray-500 lg:table-cell">{person.email}</td>
+                    <td className="hidden px-3 py-4 w-1/12 text-sm lg:text-base text-gray-500 sm:table-cell">
+                      {person.is_staff ? "管理者" : "一般"}
+                    </td>
+                    <td className="hidden px-3 py-4 w-1/4 text-sm lg:text-base text-gray-500 md:table-cell">
+                      {person.team_relation.map((team, idx) => (
+                        <span key={idx}>{team.team_name} </span>
+                      ))}
+                    </td>
+                    <td className="hidden px-3 py-4 w-1/4 text-sm lg:text-base text-gray-500 lg:table-cell">
+                      {person.email}
+                    </td>
                     <td className="px-3 py-4 text-sm lg:text-base w-1/6 text-gray-500">
-                      {person.isActive
+                      {person.is_active
                         ? <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
                           有効
                         </span>

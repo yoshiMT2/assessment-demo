@@ -12,6 +12,8 @@ export const  RESET_ENDPOINT = BACKEND_URL + 'api/password/reset/?'
 
 export const  FORGOT_ENDPOINT = BACKEND_URL + 'api/password/forgot/'
 
+export const MEMBER_ENDPOINT = BACKEND_URL + 'api/user/'
+
 export const COMPANY_ENDPOINT = BACKEND_URL + 'api/company/'
 
 export const TEAM_ENDPOINT = BACKEND_URL + 'api/team/'

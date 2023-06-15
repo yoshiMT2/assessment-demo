@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import Dropdown from '../dropdown'
 import Button from '../button'
@@ -44,8 +45,8 @@ const Types = [
   { value: 2, label: "編集" },
 ]
 
-export default function RegisterMemberTemplate() {
-  const [selectedCompany, setSelectedCompany] = useState()
+export default function RegisterMemberTemplate({members}) {
+  // const [selectedCompany, setSelectedCompany] = useState()
   const [teamOptions, setTeamOptions] = useState()
   const [selectedTeam, setSelectedTeam] = useState()
   const [selectedMethod, setSelectedMethod] = useState(RegistrationMethods[0])
@@ -54,13 +55,15 @@ export default function RegisterMemberTemplate() {
   const [numOfAssessor, setNumOfAssessor] = useState()
   const [teamMembers, setTeamMembers] = useState()
 
-  useEffect(() => {
-    if (!selectedCompany) { return }
-    const teams = Teams.filter(t => t.company_id === selectedCompany.value)
-    const options = teams.map(t => ({ value: t.team_id, label: t.team_name }))
-    setTeamOptions(options)
-    setSelectedTeam(null)
-  }, [selectedCompany])
+  // useEffect(() => {
+  //   if (!selectedCompany) { return }
+  //   const teams = Teams.filter(t => t.company_id === selectedCompany.value)
+  //   const options = teams.map(t => ({ value: t.team_id, label: t.team_name }))
+  //   setTeamOptions(options)
+  //   setSelectedTeam(null)
+  // }, [selectedCompany])
+
+
 
   useEffect(() => {
     if (!selectedTeam || !selectedMethod) {
@@ -83,7 +86,7 @@ export default function RegisterMemberTemplate() {
     <div className='w-full bg-slate-100 overflow-auto'>
       <div className='mx-4'>
         <div className='lg:flex'>
-          <div className='w-52 z-20 mt-4 ml-6'>
+          {/* <div className='w-52 z-20 mt-4 ml-6'>
             <div className='mb-2'>会社を選択</div>
             <Dropdown
               options={Companies}
@@ -91,7 +94,7 @@ export default function RegisterMemberTemplate() {
               selectedOption={selectedCompany}
               setSelectedOption={setSelectedCompany}
             />
-          </div>
+          </div> */}
           <div className='w-48 ml-6 mt-4 z-20'>
             <div className='mb-2'>チームを選択</div>
             <Dropdown
@@ -163,9 +166,11 @@ export default function RegisterMemberTemplate() {
             </div>
           </div>
         )}
-        {teamMembers && (
+        {members && (
           <div className={`bg-white px-2 pt-6 ${selectedMethod.value === 1 ? "mt-6" : "mt-16"} rounded-lg border`}>
-            <MemberTable teamName={selectedTeam.label} members={teamMembers} />
+            <MemberTable
+              // teamName={selectedTeam.label}
+              members={members} />
           </div>
         )}
         {/* <div className='bg-white px-2 pt-4 mt-6 rounded-lg border'>

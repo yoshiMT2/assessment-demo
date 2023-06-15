@@ -19,7 +19,7 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
 
   return (
     <div>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
             <h1 className="text-2xl font-semibold leading-6 text-gray-900">会社登録・編集</h1>
@@ -36,7 +36,7 @@ export default function CompanyTable({ companies, setShowModal, setCompanyToEdit
         </div>
       </div>
       <div className="mt-2 flow-root overflow-hidden">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto">
           <table className="w-full text-center">
             <thead className="sticky top-0 bg-white shadow z-10">
               <tr className="">

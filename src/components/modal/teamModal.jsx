@@ -13,6 +13,7 @@ export default function TeamModal({ open, title, onClose, team, companyId, submi
   const [, setFormData] = useAtom(formAtom)
   const [teamName, setTeamName] = useState("")
   const [isValidData, setIsValidData] = useState(false)
+  console.log(team)
 
 
   function clickHandler() {

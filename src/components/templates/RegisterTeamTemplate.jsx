@@ -22,12 +22,13 @@ export default function RegisterTeamTemplate({ teams, companyId ,refreshData }) 
     setIsLoading(true)
     const url = team ? TEAM_ENDPOINT + 'update/' + team.id : TEAM_ENDPOINT + 'create/'
     const method = team ? 'PATCH' : 'POST'
+    const body = team ? formData : [formData]
     const resp = await requestWithTokenRefresh(url, {
       method: method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify([formData]),
+      body: JSON.stringify(body),
     }, navigate)
     if (resp.status === 200 || resp.status === 201) {
       setStatus("success")
@@ -50,7 +51,7 @@ export default function RegisterTeamTemplate({ teams, companyId ,refreshData }) 
         <TeamTable
           teams={teams}
           setShowModal={setShowModal}
-          setCompanyToEdit={setTeam}
+          setTeamToEdit={setTeam}
         />
       </div>
       {showModal && (
