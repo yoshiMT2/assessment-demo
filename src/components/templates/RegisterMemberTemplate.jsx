@@ -257,8 +257,14 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
       {showComfirmation && (
         <ConfirmationModal
           open={showComfirmation}
-          title="データ登録・更新完了"
-          msg="会社情報の登録・更新が正常に終了しました。"
+          title={status === "success"
+            ? "データ登録・更新完了"
+            : "登録・更新失敗"
+          }
+          msg={status === "success"
+            ? "ユーザーの登録・更新が正常に終了しました。"
+            : "登録・更新に失敗しました。"
+          }
           status={status}
           onConfirm={handleConfirm}
         />
