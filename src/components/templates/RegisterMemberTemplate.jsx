@@ -13,7 +13,7 @@ import MemberTable from '../table/memberTable'
 import CSVDataTable from '../table/csvDataTable'
 import MemberModal from '../modal/memberModal'
 import ConfirmationModal from '../modal'
-import { MEMBER_ENDPOINT } from '../../utils/constants'
+import { BACKEND_URL, MEMBER_ENDPOINT } from '../../utils/constants'
 import { requestWithTokenRefresh } from '../../utils/AuthService'
 
 
@@ -36,9 +36,9 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
   useEffect(() => {
     if (!selectedMethod) { return }
     if (selectedMethod.value !== 2) {
-      setUploadedData({ })
+      setUploadedData({})
     }
-  },[selectedMethod])
+  }, [selectedMethod])
 
   useEffect(() => {
     if (selectedTeam.value === 0) {
@@ -62,7 +62,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
       if (selectedType.value === 1) {
         const teamNames =
           teams
-            .filter(t=> t.label !== "全チーム")
+            .filter(t => t.label !== "全チーム")
             .map(t => t.label)
         headers = [...RegisterationHeaders, ...teamNames]
         // eslint-disable-next-line no-unused-vars
@@ -75,8 +75,9 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
 
   async function handleSubmit() {
     setIsLoading(true)
-    const url = member ? MEMBER_ENDPOINT + member.id : MEMBER_ENDPOINT
+    const url = member ? MEMBER_ENDPOINT + 'update/' + member.id + '/' : MEMBER_ENDPOINT + 'create/'
     const method = member ? 'PATCH' : 'POST'
+    console.log(formData)
     const resp = await requestWithTokenRefresh(url, {
       method: method,
       headers: {
@@ -94,9 +95,27 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
     setShowComfirmation(true)
   }
 
-  function handleCSVDataSubmit(){
-    return
+  async function handleCSVDataSubmit() {
+    setIsLoading(true)
+    const url = selectedMethod.value === 1 ? BACKEND_URL + 'upload_csv/' : BACKEND_URL + 'update_csv/'
+    const resp = await requestWithTokenRefresh(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(uploadedData),
+    })
+    if (resp.status === 200 || resp.status === 201) {
+      setStatus("success")
+    } else {
+      setStatus("failed")
+    }
+    setShowModal(false)
+    setIsLoading(false)
+    setShowComfirmation(true)
   }
+
+  console.log(uploadedData)
 
   function handleConfirm() {
     refreshData()

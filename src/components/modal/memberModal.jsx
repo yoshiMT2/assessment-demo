@@ -52,7 +52,7 @@ export default function MemberModal({ open, title, onClose, member, teams, submi
       email: email,
       member_category: category,
       is_active: isActive.value,
-      teams: [newTeams]
+      team_relation: newTeams
     }
     setFormData(formData)
     // eslint-disable-next-line react-hooks/exhaustive-deps

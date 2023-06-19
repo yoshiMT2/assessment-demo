@@ -22,12 +22,10 @@ const ResigterTeam = () => {
 
   return (
     <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>
-      {/* {teams && ( */}
         <RegisterTeamTemplate
           teams={teams}
           refreshData={fetchTeams}
         />
-      {/* )} */}
     </div>)
 }
 

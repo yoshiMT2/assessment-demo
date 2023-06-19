@@ -4,7 +4,6 @@
 export default function CSVDataTable({ data, type, setShowModal, submitData }) {
   const allKeys = Object.keys(data[0])
   const teamNames = allKeys.slice(6)
-  console.log(allKeys)
   function handleSubmitButtonClick() {
     setShowModal(true)
   }
