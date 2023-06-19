@@ -5,7 +5,8 @@ import { useAtom } from 'jotai'
 export default function MemberTable({ members, team, setShowModal, setMemberToEdit }) {
   const [, setFormData] = useAtom(formAtom)
   function handleCreateButtonClick() {
-    setFormData(null)
+    setMemberToEdit()
+    setFormData()
     setShowModal(true)
   }
 

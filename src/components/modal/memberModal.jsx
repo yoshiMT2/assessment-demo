@@ -60,13 +60,13 @@ export default function MemberModal({ open, title, onClose, member, teams, submi
 
 
   useEffect(() => {
-    if (!member || !selectedTeams) { return }
+    let defaultTeams = selectedTeams.map(t => ({ ...t, checked: false }))
+    if (!member) { return }
     setName(member.name)
     setHiraganaName(member.name_hiragana)
     setEmail(member.email)
     setCategory(member.member_category)
     setIsActive(member.is_active ? { value: true, label: "有効" } : { value: false, label: "停止中" })
-    let defaultTeams = selectedTeams.map(t => ({ ...t, checked: false }))
     if (member.team_relation.length > 0) {
       const memberTeams = member.team_relation.map(t => t.id)
       defaultTeams = selectedTeams.map(t =>
@@ -75,7 +75,6 @@ export default function MemberModal({ open, title, onClose, member, teams, submi
           : ({ ...t, checked: false })
       )
     }
-    console.log(defaultTeams)
     setSelectedTeams(defaultTeams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [member])

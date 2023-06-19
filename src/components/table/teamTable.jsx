@@ -6,6 +6,7 @@ import { formAtom } from '../../utils/atom'
 export default function TeamTable({ teams, setShowModal, setTeamToEdit }) {
   const [,setFormData] = useAtom(formAtom)
   function handleCreateButtonClick() {
+    setTeamToEdit()
     setFormData(null)
     setShowModal(true)
   }

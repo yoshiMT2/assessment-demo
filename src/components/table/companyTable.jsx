@@ -7,7 +7,8 @@ import { formAtom } from '../../utils/atom'
 export default function CompanyTable({ companies, setShowModal, setCompanyToEdit }) {
   const [, setFormData ] = useAtom(formAtom)
   function handleCreateButtonClick() {
-    setFormData(null)
+    setCompanyToEdit()
+    setFormData()
     setShowModal(true)
   }
 
