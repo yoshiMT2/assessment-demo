@@ -9,12 +9,10 @@ import { formAtom } from '../../utils/atom'
 import Loader from '../loader'
 
 // eslint-disable-next-line react/prop-types
-export default function TeamModal({ open, title, onClose, team, companyId, submitForm, loading }) {
+export default function TeamModal({ open, title, onClose, team, submitForm, loading }) {
   const [, setFormData] = useAtom(formAtom)
   const [teamName, setTeamName] = useState("")
   const [isValidData, setIsValidData] = useState(false)
-  console.log(team)
-
 
   function clickHandler() {
     onClose(false)
@@ -22,12 +20,11 @@ export default function TeamModal({ open, title, onClose, team, companyId, submi
 
   useEffect(() => {
     const formData = {
-      company_relation: companyId,
       team_name: teamName
     }
     setFormData(formData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companyId, teamName])
+  }, [teamName])
 
   useEffect(() => {
     if (!team) { return }

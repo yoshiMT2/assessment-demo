@@ -11,6 +11,7 @@ const ResigterCompany = () => {
   const fetchCompanies = useCallback(async () => {
     const resp = await requestWithTokenRefresh(COMPANY_ENDPOINT, {}, navigate)
       const data = await resp.json()
+      console.log(data)
       setCompanies(data.data)
   },[navigate])
 

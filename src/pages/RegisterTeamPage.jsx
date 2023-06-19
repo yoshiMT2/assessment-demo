@@ -9,6 +9,7 @@ const ResigterTeam = () => {
   const navigate = useNavigate()
   const user = UseUserDetails()[0]
   const [teams, setTeams] = useState()
+  console.log(user)
 
   const fetchTeams = useCallback(async () => {
     const resp = await requestWithTokenRefresh(TEAM_ENDPOINT + 'list', {}, navigate)
@@ -25,7 +26,6 @@ const ResigterTeam = () => {
       {/* {teams && ( */}
         <RegisterTeamTemplate
           teams={teams}
-          companyId={user.company_relation.id}
           refreshData={fetchTeams}
         />
       {/* )} */}

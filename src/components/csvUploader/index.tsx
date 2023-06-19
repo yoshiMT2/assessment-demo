@@ -1,9 +1,9 @@
-import React,{ useState, useCallback } from 'react';
+import React,{ useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { CloudArrowUpIcon } from '@heroicons/react/20/solid';
 import Papa from 'papaparse';
 
-const CsvUploader = () => {
+const CsvUploader = ({uploadData}) => {
   const [csvData, setCsvData] = useState<Array<Record<string, string>>>([])
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
@@ -15,6 +15,11 @@ const CsvUploader = () => {
       })
     })
   }, [])
+  useEffect(() => {
+    const cleanData = csvData.slice(1)
+    uploadData(cleanData)
+  },[csvData])
+
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

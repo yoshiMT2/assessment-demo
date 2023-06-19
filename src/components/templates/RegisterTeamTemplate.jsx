@@ -61,7 +61,6 @@ export default function RegisterTeamTemplate({ teams, companyId ,refreshData }) 
           title="チーム登録・編集フォーム"
           msg="必要事項を入力して、送信ボタンを押してください。"
           team={team}
-          companyId={companyId}
           loading={isLoading}
           submitForm={handleSubmit}
         />
