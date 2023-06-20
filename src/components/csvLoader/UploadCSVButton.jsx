@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import Button from '../button';
+import Button from '../button';/
 
 const UploadCSVButton = () => {
   const handleUpload = (event) => {
