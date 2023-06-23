@@ -53,138 +53,150 @@ export default function Sidebar() {
           <div className="flex grow flex-col mt-3 overflow-y-auto border-r px-6">
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="-mx-primary-2 space-y-3">
-                <li key={menuItems[0].name}>
-                  <NavLink
-                    to={menuItems[0].href}
-                    onClick={() => handleMenuItemClick(menuItems[0].name)}
-                    className={classNames(
-                      menuItems[0].name === menu
-                        ? ' text-primary-2 font-bold'
-                        : 'text-gray-700',
-                      'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
-                    )}
-                  >
-                    <HomeIcon
+                {!user.is_superuser && (
+                  <li key={menuItems[0].name}>
+                    <NavLink
+                      to={menuItems[0].href}
+                      onClick={() => handleMenuItemClick(menuItems[0].name)}
                       className={classNames(
-                        menuItems[0].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
-                        'h-6 w-6 shrink-0'
+                        menuItems[0].name === menu
+                          ? ' text-primary-2 font-bold'
+                          : 'text-gray-700',
+                        'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
                       )}
-                      aria-hidden="true"
-                    />
-                    {menuItems[0].name}
-                  </NavLink>
-                  <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                </li>
-                <li key={menuItems[1].name}>
-                  <NavLink
-                    to={menuItems[1].href}
-                    onClick={() => handleMenuItemClick(menuItems[1].name)}
-                    className={classNames(
-                      menuItems[1].name === menu
-                        ? ' text-primary-2 font-bold'
-                        : 'text-gray-700',
-                      'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
-                    )}
-                  >
-                    <DocumentMinusIcon
+                    >
+                      <HomeIcon
+                        className={classNames(
+                          menuItems[0].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
+                          'h-6 w-6 shrink-0'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {menuItems[0].name}
+                    </NavLink>
+                    <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                  </li>
+                )}
+                {!user.is_superuser && (
+                  <li key={menuItems[1].name}>
+                    <NavLink
+                      to={menuItems[1].href}
+                      onClick={() => handleMenuItemClick(menuItems[1].name)}
                       className={classNames(
-                        menuItems[1].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
-                        'h-6 w-6 shrink-0'
+                        menuItems[1].name === menu
+                          ? ' text-primary-2 font-bold'
+                          : 'text-gray-700',
+                        'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
                       )}
-                      aria-hidden="true"
-                    />
-                    {menuItems[1].name}
-                  </NavLink>
-                </li>
-                <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                <li key={menuItems[2].name}>
-                  <NavLink
-                    to={menuItems[2].href}
-                    onClick={() => handleMenuItemClick(menuItems[2].name)}
-                    className={classNames(
-                      menuItems[2].name === menu
-                        ? ' text-primary-2 font-bold'
-                        : 'text-gray-700',
-                      'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
-                    )}
-                  >
-                    <UserGroupIcon
+                    >
+                      <DocumentMinusIcon
+                        className={classNames(
+                          menuItems[1].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
+                          'h-6 w-6 shrink-0'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {menuItems[1].name}
+                    </NavLink>
+                    <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                  </li>
+                )}
+                {(user.is_superuser || user.member_category > 1) && (
+                  <li key={menuItems[2].name}>
+                    <NavLink
+                      to={menuItems[2].href}
+                      onClick={() => handleMenuItemClick(menuItems[2].name)}
                       className={classNames(
-                        menuItems[2].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
-                        'h-6 w-6 shrink-0'
+                        menuItems[2].name === menu
+                          ? ' text-primary-2 font-bold'
+                          : 'text-gray-700',
+                        'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
                       )}
-                      aria-hidden="true"
-                    />
-                    {menuItems[2].name}
-                  </NavLink>
-                  <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                </li>
-                <li key={menuItems[3].name}>
-                  <NavLink
-                    to={menuItems[3].href}
-                    onClick={() => handleMenuItemClick(menuItems[3].name)}
-                    className={classNames(
-                      menuItems[3].name === menu
-                        ? ' text-primary-2 font-bold'
-                        : 'text-gray-700',
-                      'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
-                    )}
-                  >
-                    <UserPlusIcon
+                    >
+                      <UserGroupIcon
+                        className={classNames(
+                          menuItems[2].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
+                          'h-6 w-6 shrink-0'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {menuItems[2].name}
+                    </NavLink>
+                    <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                  </li>
+                )}
+                {!user.is_superuser && user.member_category === 99 && (
+                  <li key={menuItems[3].name}>
+                    <NavLink
+                      to={menuItems[3].href}
+                      onClick={() => handleMenuItemClick(menuItems[3].name)}
                       className={classNames(
-                        menuItems[3].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
-                        'h-6 w-6 shrink-0'
+                        menuItems[3].name === menu
+                          ? ' text-primary-2 font-bold'
+                          : 'text-gray-700',
+                        'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
                       )}
-                      aria-hidden="true"
-                    />
-                    {menuItems[3].name}
-                  </NavLink>
-                  <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                </li>
-                <li key={menuItems[4].name}>
-                  <NavLink
-                    to={menuItems[4].href}
-                    onClick={() => handleMenuItemClick(menuItems[4].name)}
-                    className={classNames(
-                      menuItems[4].name === menu
-                        ? ' text-primary-2 font-bold'
-                        : 'text-gray-700',
-                      'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
-                    )}
-                  >
-                    <UsersIcon
+                    >
+                      <UserPlusIcon
+                        className={classNames(
+                          menuItems[3].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
+                          'h-6 w-6 shrink-0'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {menuItems[3].name}
+                    </NavLink>
+                    <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                  </li>
+                )}
+                {!user.is_superuser && user.member_category === 99 && (
+                  <li key={menuItems[4].name}>
+                    <NavLink
+                      to={menuItems[4].href}
+                      onClick={() => handleMenuItemClick(menuItems[4].name)}
                       className={classNames(
-                        menuItems[4].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
-                        'h-6 w-6 shrink-0'
+                        menuItems[4].name === menu
+                          ? ' text-primary-2 font-bold'
+                          : 'text-gray-700',
+                        'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
                       )}
-                      aria-hidden="true"
-                    />
-                    {menuItems[4].name}
-                  </NavLink>
-                  <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                </li>
-                <li key={menuItems[5].name}>
-                  <NavLink
-                    to={menuItems[5].href}
-                    onClick={() => handleMenuItemClick(menuItems[5].name)}
-                    className={classNames(
-                      menuItems[5].name === menu
-                        ? ' text-primary-2 font-bold'
-                        : 'text-gray-700',
-                      'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
-                    )}
-                  >
-                    <SquaresPlusIcon
+                    >
+                      <UsersIcon
+                        className={classNames(
+                          menuItems[4].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
+                          'h-6 w-6 shrink-0'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {menuItems[4].name}
+                    </NavLink>
+                    <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                  </li>
+                )}
+                {user.is_superuser && (
+                  <li key={menuItems[5].name}>
+                    <NavLink
+                      to={menuItems[5].href}
+                      onClick={() => handleMenuItemClick(menuItems[5].name)}
                       className={classNames(
-                        menuItems[5].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
-                        'h-6 w-6 shrink-0'
+                        menuItems[5].name === menu
+                          ? ' text-primary-2 font-bold'
+                          : 'text-gray-700',
+                        'group flex  gap-x-3 py-1 rounded-md text-sm leading-6'
                       )}
-                      aria-hidden="true"
-                    />
-                    {menuItems[5].name}
-                  </NavLink>
-                  <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
-                </li>
+                    >
+                      <SquaresPlusIcon
+                        className={classNames(
+                          menuItems[5].name === menu ? 'text-primary-2' : 'text-gray-400 group-hover:text-gray-500',
+                          'h-6 w-6 shrink-0'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {menuItems[5].name}
+                    </NavLink>
+                    <div className='border-[0.5px] border-zinc-400 -mx-6 mt-3' />
+                  </li>
+                )}
                 <li key={menuItems[6].name}>
                   <NavLink
                     to={menuItems[6].href}
