@@ -84,12 +84,12 @@ const Assesment = () => {
         <ConfirmationModal
           open={showModal}
           title={status === "success"
-            ? "データ登録・更新完了"
-            : "登録・更新失敗"
+            ? "送信完了"
+            : "送信失敗"
           }
           msg={status === "success"
-            ? "ユーザーの登録・更新が正常に終了しました。"
-            : "登録・更新に失敗しました。"
+            ? "アセスメントの実施が正常に完了しました。"
+            : "アセスメント結果の送信に失敗しました。"
           }
           status={status}
           onConfirm={handleConfirm}
