@@ -3,11 +3,9 @@ import { useNavigate } from 'react-router'
 import RegisterTeamTemplate from '../components/templates/RegisterTeamTemplate'
 import { TEAM_ENDPOINT } from '../utils/constants'
 import { requestWithTokenRefresh } from '../utils/AuthService'
-import { UseUserDetails } from '../context/UserContext'
 
 const ResigterTeam = () => {
   const navigate = useNavigate()
-  // const user = UseUserDetails()[0]
   const [teams, setTeams] = useState()
 
   const fetchTeams = useCallback(async () => {

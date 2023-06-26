@@ -9,7 +9,7 @@ import { TEAM_ENDPOINT } from '../../utils/constants'
 import { requestWithTokenRefresh } from '../../utils/AuthService'
 
 // eslint-disable-next-line react/prop-types
-export default function RegisterTeamTemplate({ teams, companyId ,refreshData }) {
+export default function RegisterTeamTemplate({ teams ,refreshData }) {
   const navigate = useNavigate()
   const [formData, ] = useAtom(formAtom)
   const [team, setTeam] = useState()

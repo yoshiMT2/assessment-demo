@@ -1,37 +1,101 @@
-import { useState, useEffect } from 'react'
+/* eslint-disable react/prop-types */
+import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router'
 import AssessmentTemplate from '../components/templates/AssessmentTemplate'
-import { UseUserDetails } from '../context/UserContext'
+import Loader from '../components/loader'
+import ConfirmationModal from '../components/modal'
+import { requestWithTokenRefresh } from '../utils/AuthService'
+import { ANSWER_ENDPOINT, EVALUATION_ENDPOINT } from '../utils/constants'
 import { useAtom } from 'jotai'
-import { assesseeAtom } from '../utils/atom'
-import { questions, questionsForOthers } from '../utils/questions';
+import { assessmentAtom } from '../utils/atom'
 
 
 const Assesment = () => {
-  const user = UseUserDetails()[0]
-  const [assessee,] = useAtom(assesseeAtom)
-  const [assessmentQuestions, setAssessmentQuestions] = useState()
+  const [assessment,] = useAtom(assessmentAtom)
+  const navigate = useNavigate()
+  const [answers, setAnswers] = useState()
+  const [isLoading, setIsLoading] = useState(true)
+  const [showModal, setShowModal] = useState(false)
+  const [status, setStatus] = useState()
+
+  const fetchAnswers = useCallback(async () => {
+    const resp = await requestWithTokenRefresh(ANSWER_ENDPOINT + `list/?evaluation_id=${assessment.id}`, {}, navigate)
+    const data = await resp.json()
+    setAnswers(data)
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate])
 
   useEffect(() => {
-    if (!user || !assessee) { return }
-    if (user.id === assessee.id) {
-      setAssessmentQuestions(questions)
-    } else {
-      setAssessmentQuestions(questionsForOthers)
-    }
+    if (!assessment) { return }
+    fetchAnswers()
+  }, [assessment, fetchAnswers])
+
+  const updateAnswer = useCallback(async (data) => {
+    await requestWithTokenRefresh(ANSWER_ENDPOINT + `update/${data.id}/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }, navigate)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [navigate])
+
+  async function submitAnswers() {
+    setIsLoading(true)
+    const resp = await requestWithTokenRefresh(EVALUATION_ENDPOINT + `complete/?evaluation_id=${assessment.id}`, {
+      method: 'PATCH'
+    }, navigate)
+    if (resp.ok) {
+      setStatus("success")
+    } else {
+      setStatus("failed")
+    }
+    setIsLoading(false);
+    setShowModal(true)
+  }
+  function handleConfirm() {
+    setShowModal(false)
+    navigate('/')
+  }
+
   return (
-    <>
+    <div>
       <div className='relative top-16 flex justify-center'>
-        {assessmentQuestions && (
-          <AssessmentTemplate
-            questions={assessmentQuestions}
-            assessee={assessee}
-            user={user}
-          />
-        )}
+        {isLoading
+          ? <div className="flex justify-center items-center content-center"><Loader /></div>
+          : (
+            answers && (
+              <AssessmentTemplate
+                answers={answers}
+                assessment={assessment}
+                updateAnswer={updateAnswer}
+                submitAnswers={submitAnswers}
+              />
+            )
+
+          )}
+
       </div>
-    </>
+      {showModal && (
+        <ConfirmationModal
+          open={showModal}
+          title={status === "success"
+            ? "データ登録・更新完了"
+            : "登録・更新失敗"
+          }
+          msg={status === "success"
+            ? "ユーザーの登録・更新が正常に終了しました。"
+            : "登録・更新に失敗しました。"
+          }
+          status={status}
+          onConfirm={handleConfirm}
+        />
+      )}
+    </div>
   )
 }
 

@@ -1,24 +1,26 @@
-import { useEffect } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react'
+import { NavLink } from 'react-router-dom';
 import Button from '../button';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import { UseUserDetails } from '../../context/UserContext';
 import { useAtom } from 'jotai';
-import { assesseeAtom } from '../../utils/atom';
+import { assessmentAtom } from '../../utils/atom';
 
-export default function HomeTemplate() {
-  const navigate = useNavigate()
+export default function HomeTemplate({ assessments }) {
   const user = UseUserDetails()[0]
-  const [, setAssessee] = useAtom(assesseeAtom)
-  function setSelfAssessment() {
-    setAssessee({ id: user.id, name: user.name })
-  }
+  const [selfAssessment, setSelfAssessment] = useState()
+  const [otherAssessments, setOtherAssessments] = useState()
+  const [,setAssessment] = useAtom(assessmentAtom)
+
   useEffect(() => {
-    if (!user.id) {
-      navigate('/login')
-     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[user])
+    if (!assessments) { return }
+    const myAssessment = assessments.filter(a => a.received_evaluations === user.id)
+    setSelfAssessment(myAssessment[0])
+    const otherAssessments = assessments.filter(a => a.received_evaluations !== user.id)
+    setOtherAssessments(otherAssessments)
+  }, [assessments, user])
+
   return (
     (user.id && (
       <>
@@ -32,14 +34,26 @@ export default function HomeTemplate() {
                 </div>
                 <div className='mt-2 border-[0.5px] border-gray-400'></div>
               </div>
-              <div className='flex justify-center items-center'>
-                <NavLink to='/assessment'>
-                  <Button
-                    title="アセスメントを実施する"
-                    className='my-10 md:w-96'
-                    onClick={setSelfAssessment}
-                  />
-                </NavLink>
+              <div className='flex justify-center items-center my-10'>
+                {selfAssessment && (
+                  selfAssessment.complete
+                    ? (
+                      <Button
+                        title="アセスメントは完了しています"
+                        className="md:w-96"
+                        disabled
+                      />
+                    )
+                    : (
+                      <NavLink to='/assessment'>
+                        <Button
+                          title="アセスメントを実施する"
+                          className="md:w-96"
+                          onClick={() => setAssessment(selfAssessment)}
+                        />
+                      </NavLink>
+                    )
+                )}
               </div>
             </div>
           </div>
@@ -52,19 +66,27 @@ export default function HomeTemplate() {
                 </div>
                 <div className='mt-2 border-[0.5px] border-gray-400'></div>
               </div>
-              <div className='my-6 flex flex-col justify-center items-center gap-y-6'>
-                <Button
-                  title="Aさんのアセスメントを実施する"
-                  className='md:w-96'
-                />
-                <Button
-                  title="Bさんのアセスメントを実施する"
-                  className='md:w-96'
-                />
-                <Button
-                  title="Cさんのアセスメントを実施する"
-                  className='md:w-96'
-                />
+              <div className='my-10 flex flex-col justify-center items-center gap-y-10'>
+                {otherAssessments && otherAssessments.map((assessment, index) => (
+                  assessment.complete
+                    ? (
+                      <Button
+                        key={index}
+                        title={`${assessment.received_evaluations_name}さんのアセスメントは実施済です`}
+                        className="md:w-96"
+                        disabled
+                      />
+                    )
+                    : (
+                      <NavLink key={index} to='/assessment'>
+                        <Button
+                          title={`${assessment.received_evaluations_name}さんのアセスメントを実施する`}
+                          className="md:w-96"
+                          onClick={() => setAssessment(assessment)}
+                        />
+                      </NavLink>
+                    )
+                ))}
               </div>
             </div>
           </div>

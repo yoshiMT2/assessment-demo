@@ -8,4 +8,4 @@ export const SuperuserRoutes = () => {
   )
 }
 
-export default PrivateRoutes
+export default SuperuserRoutes

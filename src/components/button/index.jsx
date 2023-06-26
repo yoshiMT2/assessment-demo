@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 function Button(props) {
-  const className = `flex justify-center px-6 py-3 bg-primary-3 text-white rounded-full disabled:bg-gray-200 hover:bg-primary-1 transition-colors ${props.className || ''}`
+  const className = `flex justify-center px-6 py-3 bg-primary-3 text-white rounded-full disabled:bg-slate-300 hover:bg-primary-1 transition-colors ${props.className || ''}`
   return (
     <div>
       <button {...props} className={className}>
