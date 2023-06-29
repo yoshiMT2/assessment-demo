@@ -1,40 +1,50 @@
 /* eslint-disable react/prop-types */
 import { Radar, RadarChart as RadarChartBase, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
+import { useState, useEffect } from 'react'
+// const data = [
+//   {
+//     subject: '協調性',
+//     A: 98,
+//     B: 130,
+//     fullMark: 150,
+//   },
+//   {
+//     subject: 'リーダーシップ',
+//     A: 86,
+//     B: 130,
+//     fullMark: 150,
+//   },
+//   {
+//     subject: '計画性',
+//     A: 99,
+//     B: 140,
+//     fullMark: 150,
+//   },
+//   {
+//     subject: '積極性',
+//     A: 125,
+//     B: 90,
+//     fullMark: 150,
+//   },
+//   {
+//     subject: '独創性',
+//     A: 65,
+//     B: 85,
+//     fullMark: 150,
+//   },
+// ];
 
-const data = [
-  {
-    subject: '協調性',
-    A: 98,
-    B: 130,
-    fullMark: 150,
-  },
-  {
-    subject: 'リーダーシップ',
-    A: 86,
-    B: 130,
-    fullMark: 150,
-  },
-  {
-    subject: '計画性',
-    A: 99,
-    B: 140,
-    fullMark: 150,
-  },
-  {
-    subject: '積極性',
-    A: 125,
-    B: 90,
-    fullMark: 150,
-  },
-  {
-    subject: '独創性',
-    A: 65,
-    B: 85,
-    fullMark: 150,
-  },
-];
-
-function RadarChart({ showThirdPerson }) {
+function RadarChart({ showThirdPerson, scores }) {
+  
+  const labels = scores ? scores['1st']['labels'] : null
+  const data = scores
+    ? labels.map((l, i) => ({
+      subject: labels[i],
+      A: scores['1st']['scores'][i],
+      B: scores['3rd']['scores'][i],
+      fullMark: 100
+    }))
+    : null
 
   return (
     <ResponsiveContainer width="100%" height="100%">
