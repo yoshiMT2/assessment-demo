@@ -12,15 +12,7 @@ import {
 import { UseUserDetails } from '../../context/UserContext'
 
 
-const navigation = [
-  { name: 'マイページ', href: '/', icon: HomeIcon, current: true },
-  { name: 'アセスメント結果を確認', href: '/result', current: false },
-  { name: 'チームの結果を確認', href: '/team', current: false },
-  { name: 'メンバー登録・編集', href: '/register/member', current: false },
-  { name: 'チーム登録・編集', href: '/register/team', current: false },
-  { name: '会社登録・編集', href: '/register/company', current: false },
-  { name: 'ログアウト', href: '/login', current: false },
-]
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -28,6 +20,18 @@ function classNames(...classes) {
 
 export default function Sidebar() {
   const user = UseUserDetails()[0]
+  const tokenFromStorage = localStorage.getItem("token")
+  const token = tokenFromStorage ? JSON.parse(tokenFromStorage) : null
+  const subdomain = token.subdomain
+  const navigation = [
+    { name: 'マイページ', href: `/${subdomain}`, icon: HomeIcon, current: true },
+    { name: 'アセスメント結果を確認', href: `/${subdomain}/result`, current: false },
+    { name: 'チームの結果を確認', href: `/${subdomain}/team`, current: false },
+    { name: 'メンバー登録・編集', href: `/${subdomain}/register/member`, current: false },
+    { name: 'チーム登録・編集', href: `/${subdomain}/register/team`, current: false },
+    { name: '会社登録・編集', href: `/${subdomain}/register/company`, current: false },
+    { name: 'ログアウト', href: `/${subdomain}/login`, current: false },
+  ]
   const [menuItems, setMenuItems] = useState(navigation)
   const [menu, setMenu] = useState('マイページ')
   const handleMenuItemClick = (itemName) => {

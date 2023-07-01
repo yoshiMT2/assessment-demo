@@ -18,7 +18,6 @@ const Home = () => {
   useEffect(() => {
     fetchAssessments()
   }, [fetchAssessments])
-  console.log(assessments)
 
   return (
     <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>

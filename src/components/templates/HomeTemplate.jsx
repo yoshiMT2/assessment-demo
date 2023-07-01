@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import Button from '../button';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import { UseUserDetails } from '../../context/UserContext';
@@ -9,6 +9,8 @@ import { assessmentAtom } from '../../utils/atom';
 
 export default function HomeTemplate({ assessments }) {
   const user = UseUserDetails()[0]
+  const { id } = useParams()
+  console.log(id)
   const [selfAssessment, setSelfAssessment] = useState()
   const [otherAssessments, setOtherAssessments] = useState()
   const [,setAssessment] = useAtom(assessmentAtom)
@@ -45,7 +47,7 @@ export default function HomeTemplate({ assessments }) {
                       />
                     )
                     : (
-                      <NavLink to='/assessment'>
+                      <NavLink to={`/${id}/assessment`}>
                         <Button
                           title="アセスメントを実施する"
                           className="md:w-96"
@@ -78,7 +80,7 @@ export default function HomeTemplate({ assessments }) {
                       />
                     )
                     : (
-                      <NavLink key={index} to='/assessment'>
+                      <NavLink key={index} to={`/${id}/assessment`}>
                         <Button
                           title={`${assessment.received_evaluations_name}さんのアセスメントを実施する`}
                           className="md:w-96"

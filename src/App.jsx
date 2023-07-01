@@ -11,7 +11,7 @@ import ForgotPaswordPage from './pages/ForgotPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import SideNavigationLayout from './components/Layout';
 import PrivateRoutes from './utils/PrivateRoutes';
-import { UserProvider } from "./context/UserContext";
+import { UseUserDetails, UserProvider } from "./context/UserContext";
 
 
 function App() {
@@ -32,13 +32,13 @@ function App() {
                 <SideNavigationLayout>
                   <Routes>
                     <Route element={<PrivateRoutes />}>
-                      <Route path='/' element={<Home />} />
-                      <Route path='/assessment' element={<Assesment />} />
-                      <Route path='/result' element={<Result />} />
-                      <Route path='/team' element={<Team />} />
-                      <Route path='/register/member' element={<RegisterMember />} />
-                      <Route path='/register/team' element={<RegisterTeam />} />
-                      <Route path='/register/company' element={<RegisterCompany />} />
+                      <Route path=':id/' element={<Home />} />
+                      <Route path=':id/assessment' element={<Assesment />} />
+                      <Route path=':id/result' element={<Result />} />
+                      <Route path=':id/team' element={<Team />} />
+                      <Route path=':id/register/member' element={<RegisterMember />} />
+                      <Route path=':id/register/team' element={<RegisterTeam />} />
+                      <Route path=':id/register/company' element={<RegisterCompany />} />
                     </Route>
                   </Routes>
                 </SideNavigationLayout>

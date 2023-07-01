@@ -5,20 +5,22 @@ import { MarkedSlider } from '../slider'
 import Button from '../button'
 
 
-export default function AssessmentTemplate({ answers, assessment, updateAnswer, submitAnswers}) {
+export default function AssessmentTemplate({ answers, assessment, updateAnswer, submitAnswers }) {
 
-  const [userAnswers, setUserAnswers] = useState(answers ? answers : null)
+  const [userAnswers, setUserAnswers] = useState(answers
+    ? answers.sort((a, b) => a.id - b.id)
+    : null
+  )
 
   function updateAnswerArray(data) {
-    if(data) {
+    if (data) {
       if (userAnswers) {
         const hasObject = userAnswers.some(obj => obj.id === data.id)
         if (hasObject) {
           const newAnswers = userAnswers.filter(obj => obj.id !== data.id)
-          const an = [...newAnswers, data].sort((a,b) => a.id - b.id)
-          setUserAnswers([...newAnswers, data].sort((a,b) => a.id - b.id))
+          setUserAnswers([...newAnswers, data].sort((a, b) => a.id - b.id))
         } else {
-          setUserAnswers([...userAnswers, data].sort((a,b) => a.id - b.id))
+          setUserAnswers([...userAnswers, data].sort((a, b) => a.id - b.id))
         }
       }
       updateAnswer(data)

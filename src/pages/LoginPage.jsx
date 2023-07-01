@@ -23,7 +23,10 @@ function LoginPage() {
     e.preventDefault();
     try {
       await login(email, password);
-      navigate("/");
+      const tokenFromStorage = localStorage.getItem("token")
+      const token = tokenFromStorage ? JSON.parse(tokenFromStorage) : null
+      const subdomain = token.subdomain
+      navigate(`/${subdomain}`);
       window.location.reload(false);
     } catch (error) {
       setErrorMessage(error);

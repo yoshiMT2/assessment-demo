@@ -1,48 +1,16 @@
 /* eslint-disable react/prop-types */
-import { Radar, RadarChart as RadarChartBase, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
-import { useState, useEffect } from 'react'
-// const data = [
-//   {
-//     subject: '協調性',
-//     A: 98,
-//     B: 130,
-//     fullMark: 150,
-//   },
-//   {
-//     subject: 'リーダーシップ',
-//     A: 86,
-//     B: 130,
-//     fullMark: 150,
-//   },
-//   {
-//     subject: '計画性',
-//     A: 99,
-//     B: 140,
-//     fullMark: 150,
-//   },
-//   {
-//     subject: '積極性',
-//     A: 125,
-//     B: 90,
-//     fullMark: 150,
-//   },
-//   {
-//     subject: '独創性',
-//     A: 65,
-//     B: 85,
-//     fullMark: 150,
-//   },
-// ];
+import { Radar, RadarChart as RadarChartBase, PolarGrid, PolarRadiusAxis, PolarAngleAxis, ResponsiveContainer } from 'recharts';
+
 
 function RadarChart({ showThirdPerson, scores }) {
-  
+
   const labels = scores ? scores['1st']['labels'] : null
   const data = scores
     ? labels.map((l, i) => ({
       subject: labels[i],
       A: scores['1st']['scores'][i],
       B: scores['3rd']['scores'][i],
-      fullMark: 100
+      fullMark: 4
     }))
     : null
 
@@ -50,11 +18,11 @@ function RadarChart({ showThirdPerson, scores }) {
     <ResponsiveContainer width="100%" height="100%">
       <RadarChartBase cx="45%" cy="50%" outerRadius="70%" data={data} fill="#f3f6f4">
         <PolarGrid />
-        <PolarAngleAxis dataKey="subject" tick={{ fontSize: '14px' }} />
-        {/* <PolarRadiusAxis /> */}
-        <Radar name="Mike" dataKey="A" stroke="#FF0000" fillOpacity={0} strokeWidth={5} />
+        <PolarAngleAxis dataKey="subject" tick={{ fontSize: '12px' }} radius="40%"/>
+        <PolarRadiusAxis axisLine={false} angle={30} domain={[0, 4]}/>
+        <Radar name="1st" dataKey="A" stroke="#FF0000" fillOpacity={0} strokeWidth={5} max={4} />
         {showThirdPerson && (
-          <Radar name="BOb" dataKey="B" stroke="#0000FF" fill="#8884d8" fillOpacity={0} strokeWidth={5} />
+          <Radar name="3rd" dataKey="B" stroke="#0000FF" fill="#8884d8" fillOpacity={0} strokeWidth={5} />
         )}
       </RadarChartBase>
     </ResponsiveContainer>

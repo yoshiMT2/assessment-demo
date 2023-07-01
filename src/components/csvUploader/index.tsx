@@ -27,7 +27,7 @@ const CsvUploader = ({uploadData}) => {
     <>
       <div {...getRootProps()} className={`border-2 border-dashed rounded px-5 py-2 text-center transition-all bg-slate-50 border-primary-1 ${isDragActive ? "opacity-50" : ""}`}>
         <input {...getInputProps()} />
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col justify-center items-center cursor-pointer'>
           <CloudArrowUpIcon className="text-primary-2 h-8 w-8  mb-1"/>
           <p>ファイルをドロップ or クリックしてファイル選択</p>
         </div>

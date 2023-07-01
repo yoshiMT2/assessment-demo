@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Dropdown from '../dropdown'
 import RadarChart from '../radarChart'
+import { UseUserDetails } from '../../context/UserContext'
+
 
 const Companies = [
   { value: 1, label: "丸紅" },
@@ -36,6 +38,8 @@ export default function TeamTemplate() {
   const [selectedTeam, setSelectedTeam] = useState()
   const [teamMembers, setTeamMembers] = useState()
   const [selectedMember, setSelectedMember] = useState()
+  const user = UseUserDetails()[0]
+  console.log(user)
 
   function handleClick(member) {
     setSelectedMember(member)
@@ -63,14 +67,16 @@ export default function TeamTemplate() {
     <div className='w-full bg-slate-100 overflow-auto'>
       <div className='mx-4'>
         <div className='flex mt-4 ml-6'>
-          <div className='w-64'>
-            <div className='mb-2'>会社を選択</div>
-            <Dropdown
-              options={Companies}
-              selectedOption={selectedCompany}
-              setSelectedOption={setSelectedCompany}
-            />
-          </div>
+          {user.is_superuser && (
+            <div className='w-64'>
+              <div className='mb-2'>会社を選択</div>
+              <Dropdown
+                options={Companies}
+                selectedOption={selectedCompany}
+                setSelectedOption={setSelectedCompany}
+              />
+            </div>
+          )}
           <div className='w-64 ml-10'>
             <div className='mb-2'>チームを選択</div>
             <Dropdown
