@@ -30,7 +30,7 @@ export default function Sidebar() {
     { name: 'メンバー登録・編集', href: `/${subdomain}/register/member`, current: false },
     { name: 'チーム登録・編集', href: `/${subdomain}/register/team`, current: false },
     { name: '会社登録・編集', href: `/${subdomain}/register/company`, current: false },
-    { name: 'ログアウト', href: `/${subdomain}/login`, current: false },
+    { name: 'ログアウト', href: `/login`, current: false },
   ]
   const [menuItems, setMenuItems] = useState(navigation)
   const [menu, setMenu] = useState('マイページ')
