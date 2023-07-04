@@ -44,6 +44,7 @@ export default function Sidebar() {
     } else {
       setMenuItems(navigation)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.is_staff])
 
   function logoutUser() {

@@ -12,7 +12,7 @@ function RadarChart({ showThirdPerson, scores }) {
       B: scores['3rd']['scores'][i],
       fullMark: 4
     }))
-    : null
+    : []
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -20,9 +20,10 @@ function RadarChart({ showThirdPerson, scores }) {
         <PolarGrid />
         <PolarAngleAxis dataKey="subject" tick={{ fontSize: '12px' }} radius="40%"/>
         <PolarRadiusAxis axisLine={false} angle={30} domain={[0, 4]}/>
+
         <Radar name="1st" dataKey="A" stroke="#FF0000" fillOpacity={0} strokeWidth={5} max={4} />
         {showThirdPerson && (
-          <Radar name="3rd" dataKey="B" stroke="#0000FF" fill="#8884d8" fillOpacity={0} strokeWidth={5} />
+          <Radar name="3rd" dataKey="B" stroke="#0000FF" fill="#8884d8" fillOpacity={0} strokeWidth={5} max={4}/>
         )}
       </RadarChartBase>
     </ResponsiveContainer>

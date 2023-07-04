@@ -6,9 +6,13 @@ import Button from '../button'
 
 
 export default function AssessmentTemplate({ answers, assessment, updateAnswer, submitAnswers }) {
+  const sortedAnswer = (answers) => {
+    const sorted = answers.sort((a, b) => a.quiz_relation.quiz_number.localeCompare(b.quiz_relation.quiz_number))
+    return sorted
+  }
 
   const [userAnswers, setUserAnswers] = useState(answers
-    ? answers.sort((a, b) => a.id - b.id)
+    ? sortedAnswer(answers)
     : null
   )
 
@@ -18,9 +22,9 @@ export default function AssessmentTemplate({ answers, assessment, updateAnswer, 
         const hasObject = userAnswers.some(obj => obj.id === data.id)
         if (hasObject) {
           const newAnswers = userAnswers.filter(obj => obj.id !== data.id)
-          setUserAnswers([...newAnswers, data].sort((a, b) => a.id - b.id))
+          setUserAnswers(sortedAnswer([...newAnswers, data]))
         } else {
-          setUserAnswers([...userAnswers, data].sort((a, b) => a.id - b.id))
+          setUserAnswers(sortedAnswer([...userAnswers, data]))
         }
       }
       updateAnswer(data)

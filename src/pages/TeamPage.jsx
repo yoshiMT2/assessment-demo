@@ -17,10 +17,9 @@ const Team = () => {
   useEffect(() => {
     fetchResults()
   }, [fetchResults])
-  console.log(teamResults)
   return (
     <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>
-      <TeamTemplate />
+      <TeamTemplate data={teamResults}/>
     </div>)
 }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router'
 import RegisterTeamTemplate from '../components/templates/RegisterTeamTemplate'
-import { TEAM_ENDPOINT } from '../utils/constants'
+import { BACKEND_URL } from '../utils/constants'
 import { requestWithTokenRefresh } from '../utils/AuthService'
 
 const ResigterTeam = () => {
@@ -9,7 +9,7 @@ const ResigterTeam = () => {
   const [teams, setTeams] = useState()
 
   const fetchTeams = useCallback(async () => {
-    const resp = await requestWithTokenRefresh(TEAM_ENDPOINT + 'list', {}, navigate)
+    const resp = await requestWithTokenRefresh(BACKEND_URL + 'api/team/list/', {}, navigate)
       const data = await resp.json()
       setTeams(data)
   },[navigate])

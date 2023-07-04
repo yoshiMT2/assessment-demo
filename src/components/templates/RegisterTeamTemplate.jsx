@@ -5,7 +5,7 @@ import TeamModal from '../modal/teamModal'
 import ConfirmationModal from '../modal'
 import { formAtom } from '../../utils/atom'
 import { useAtom } from 'jotai'
-import { TEAM_ENDPOINT } from '../../utils/constants'
+import { BACKEND_URL } from '../../utils/constants'
 import { requestWithTokenRefresh } from '../../utils/AuthService'
 
 // eslint-disable-next-line react/prop-types
@@ -20,7 +20,7 @@ export default function RegisterTeamTemplate({ teams ,refreshData }) {
 
   async function handleSubmit() {
     setIsLoading(true)
-    const url = team ? TEAM_ENDPOINT + 'update/' + team.id : TEAM_ENDPOINT + 'create/'
+    const url = team ? BACKEND_URL + 'api/team/update/' + team.id : BACKEND_URL + 'api/team/create/'
     const method = team ? 'PATCH' : 'POST'
     const body = team ? formData : [formData]
     const resp = await requestWithTokenRefresh(url, {

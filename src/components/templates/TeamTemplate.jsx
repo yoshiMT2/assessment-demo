@@ -1,145 +1,169 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import Dropdown from '../dropdown'
-import RadarChart from '../radarChart'
-import { UseUserDetails } from '../../context/UserContext'
+import SimpleRadarChart from '../radarChart/simpleChart'
+import Loader from '../loader'
+import { requestWithTokenRefresh } from '../../utils/AuthService'
+import { SCORE_ENDPOINT } from '../../utils/constants'
+import { useNavigate } from 'react-router'
 
 
-const Companies = [
-  { value: 1, label: "丸紅" },
-  { value: 2, label: "三井物産" }
-]
-const Teams = [
-  { company_id: 1, team_id: 1, team_name: "総務" },
-  { company_id: 1, team_id: 2, team_name: "経理" },
-  { company_id: 1, team_id: 3, team_name: "営業" },
-  { company_id: 2, team_id: 4, team_name: "人事" },
-  { company_id: 2, team_id: 5, team_name: "経営企画" },
-  { company_id: 2, team_id: 6, team_name: "海外事業部" },
-]
-const Members = [
-  { company_id: 1, team_id: 1, member_id: 1, member_name: "長谷部誠" },
-  { company_id: 1, team_id: 1, member_id: 2, member_name: "本田圭佑" },
-  { company_id: 1, team_id: 2, member_id: 3, member_name: "香川真司" },
-  { company_id: 1, team_id: 2, member_id: 4, member_name: "内田篤人" },
-  { company_id: 1, team_id: 3, member_id: 5, member_name: "吉田麻也" },
-  { company_id: 1, team_id: 3, member_id: 6, member_name: "大久保嘉人" },
-  { company_id: 2, team_id: 4, member_id: 7, member_name: "岡崎慎司" },
-  { company_id: 2, team_id: 4, member_id: 8, member_name: "川島永嗣" },
-  { company_id: 2, team_id: 5, member_id: 9, member_name: "今野泰幸" },
-  { company_id: 2, team_id: 5, member_id: 10, member_name: "長友佑都" },
-  { company_id: 2, team_id: 6, member_id: 11, member_name: "酒井宏樹" },
-  { company_id: 2, team_id: 6, member_id: 12, member_name: "遠藤保仁" },
-]
-const NumOfCharts = Members.slice(0, 5)
-
-export default function TeamTemplate() {
-  const [selectedCompany, setSelectedCompany] = useState()
+export default function TeamTemplate({ data }) {
+  const navigate = useNavigate()
+  // const companyOptions = data ? data.company.map(c => ({value: c.id, label:c.company_name})) : null
+  const [companyOptions, setCompanyOptions] = useState()
+  const [subscriptionOptions, setSubscriptionOption] = useState()
   const [teamOptions, setTeamOptions] = useState()
+  const [selectedCompany, setSelectedCompany] = useState()
+  const [selectedSubscription, setSelectedSubscription] = useState()
   const [selectedTeam, setSelectedTeam] = useState()
-  const [teamMembers, setTeamMembers] = useState()
+  const [teamData, setTeamData] = useState()
   const [selectedMember, setSelectedMember] = useState()
-  const user = UseUserDetails()[0]
-  console.log(user)
 
-  function handleClick(member) {
-    setSelectedMember(member)
-  }
+  // function handleClick(member) {
+  //   setSelectedMember(member)
+  // }
+
+  useEffect(() => {
+    if (!data) { return }
+    const options = data.company.map(c => ({ value: c.id, label: c.company_name }))
+    setCompanyOptions(options)
+    setSelectedCompany(options[0])
+  }, [data])
+
   useEffect(() => {
     if (!selectedCompany) { return }
-    const teams = Teams.filter(t => t.company_id === selectedCompany.value)
-    const options = teams.map(t => ({ value: t.team_id, label: t.team_name }))
-    setTeamOptions(options)
-    setSelectedTeam(null)
-    setSelectedMember(null)
-
+    const company = data.company.filter(c => c.id === selectedCompany.value)[0]
+    const options = company.subscription.map(s => ({ value: s.id, label: s.subscription_activation_date }))
+    setSubscriptionOption(options)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCompany])
 
   useEffect(() => {
-    if (!selectedTeam) {
-      setTeamMembers(null)
-      return
+    if (!selectedSubscription) { return }
+    const company = data.company.filter(c => c.id === selectedCompany.value)[0]
+    const subscription = company.subscription.filter(s => s.id === selectedSubscription.value)[0]
+    const options = subscription.score_teams.map(t => ({ value: t.teamid_snapshot, label: t.team_name_snapshot }))
+    setTeamOptions(options)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubscription])
+
+  useEffect(() => {
+    if (!selectedTeam) { return }
+    const getMembers = async () => {
+      const query = `subscription_id=${selectedSubscription.value}&team_id=${selectedTeam.value}`
+      const resp = await requestWithTokenRefresh(SCORE_ENDPOINT + `members/list/?${query}`, {}, navigate)
+      const data = await resp.json()
+      console.log(data)
+      if (resp.ok) {
+        setTeamData(data)
+      }
     }
-    const members = Members.filter(m => m.team_id === selectedTeam.value)
-    setTeamMembers(members)
+    getMembers()
   }, [selectedTeam])
+
+  useEffect(() => {
+    if (!selectedMember) { return }
+    console.log(selectedMember["1st"])
+  }, [selectedMember])
+
 
   return (
     <div className='w-full bg-slate-100 overflow-auto'>
-      <div className='mx-4'>
-        <div className='flex mt-4 ml-6'>
-          {user.is_superuser && (
-            <div className='w-64'>
-              <div className='mb-2'>会社を選択</div>
-              <Dropdown
-                options={Companies}
-                selectedOption={selectedCompany}
-                setSelectedOption={setSelectedCompany}
-              />
-            </div>
-          )}
-          <div className='w-64 ml-10'>
-            <div className='mb-2'>チームを選択</div>
-            <Dropdown
-              options={teamOptions}
-              selectedOption={selectedTeam}
-              setSelectedOption={setSelectedTeam}
-            />
-          </div>
-        </div>
-        {teamMembers && (
-          <div className='mt-8 ml-6'>
-            <div className='mb-2'>メンバーを選択</div>
-            <div className='grid grid-cols-3'>
-              <div className='col-span-2 bg-white w-full h-44 overflow-y-scroll'>
-                <div className='grid grid-cols-6 -ml-2 mt-2 gap-y-2'>
-                  {teamMembers.map((member, index) => (
-                    <button
-                      key={index}
-                      className='hover:opacity-70 hover:underline transition-all'
-                      onClick={() => handleClick(member)}
-                    >
-                      {member.member_name}
-                    </button>
-                  ))
-                  }
-                </div>
+      {!data
+        ? <Loader />
+        : (
+          <div className='mx-4'>
+            <div className='flex mt-4 ml-6'>
+              <div className='w-64'>
+                <div className='mb-2'>会社を選択</div>
+                <Dropdown
+                  options={companyOptions}
+                  selectedOption={selectedCompany}
+                  setSelectedOption={setSelectedCompany}
+                />
               </div>
-              <div className='col-span-1 ml-6 bg-white w-5/6 h-44'>
-                <div className='text-center text-sm'>チーム平均</div>
-                <RadarChart />
+              <div className='w-64 ml-10'>
+                <div className='mb-2'>サブスクを選択</div>
+                <Dropdown
+                  options={subscriptionOptions}
+                  selectedOption={selectedSubscription}
+                  setSelectedOption={setSelectedSubscription}
+                />
+              </div>
+              <div className='w-64 ml-10'>
+                <div className='mb-2'>チームを選択</div>
+                <Dropdown
+                  options={teamOptions}
+                  selectedOption={selectedTeam}
+                  setSelectedOption={setSelectedTeam}
+                />
               </div>
             </div>
-          </div>
-        )}
-        {selectedTeam && selectedMember && (
-          <div className='mt-8 mx-6'>
-            <div className='mb-2'>{selectedMember.member_name} のアセスメント結果</div>
-            <div className=' bg-white w-full h-64 flex items-center justify-start overflow-x-scroll'>
-              <div>
-                <div className='h-44 w-72 '>
-                  <div className='ml-10 text-red-600 text-sm'>自己評価</div>
-                  <RadarChart />
-                </div>
-              </div>
-              <div>
-                <div className='h-44 w-72'>
-                  <div className='ml-10 text-red-600 text-sm'>第三者からの評価（平均）</div>
-                  <RadarChart />
-                </div>
-              </div>
-
-              {NumOfCharts.map((member, index) => (
-                <div key={index} >
-                  <div className='h-44 w-72'>
-                    <div className='ml-10 text-red-600 text-sm'>第三者からの評価（匿名）</div>
-                    <RadarChart />
+            {teamData && (
+              <div className='mt-8 mx-6'>
+                <div className='mb-2'>メンバーを選択</div>
+                <div className='grid grid-cols-3'>
+                  <div className='col-span-2 bg-white w-full h-44 overflow-y-scroll'>
+                    <div className='grid grid-cols-5 -ml-2 mt-2 gap-y-2'>
+                      {Object.entries(teamData.members).map(([index, member]) => (
+                        <button
+                          key={index}
+                          className='hover:opacity-70 hover:underline transition-all'
+                          onClick={() => setSelectedMember(member)}
+                        >
+                          {member.received_evaluations_snapshot}
+                        </button>
+                      ))
+                      }
+                    </div>
+                  </div>
+                  <div className='col-span-1 mx-6 bg-white w-full h-44'>
+                    <div className='text-center text-sm'>チーム平均</div>
+                    <SimpleRadarChart
+                      isFirst={false}
+                      scores={teamData.team_scores}
+                    />
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+            {selectedTeam && selectedMember && (
+              <div className='mt-8 mx-6'>
+                <div className='mb-2'>{selectedMember.received_evaluations_snapshot} のアセスメント結果</div>
+                <div className=' bg-white w-full h-64 flex items-center justify-start overflow-x-scroll'>
+                  <div>
+                    <div className='h-44 w-72 '>
+                      <div className='ml-10 text-red-600 text-sm'>自己評価</div>
+                      <SimpleRadarChart
+                        isFirst={true}
+                        scores={selectedMember["1st"]}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className='h-44 w-72'>
+                      <div className='ml-10 text-red-600 text-sm'>第三者からの評価（平均）</div>
+                      {/* <RadarChart /> */}
+                    </div>
+                  </div>
+
+                  {/* {selectedMember.map((member, index) => (
+                    <div key={index} >
+                      <div className='h-44 w-72'>
+                        <div className='ml-10 text-red-600 text-sm'>第三者からの評価（匿名）</div>
+                        <RadarChart />
+                      </div>
+                    </div>
+                  ))} */}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+
+        )
+      }
+
     </div>
   )
 }
