@@ -20,10 +20,6 @@ export default function TeamTemplate({ data }) {
   const [teamData, setTeamData] = useState()
   const [selectedMember, setSelectedMember] = useState()
 
-  // function handleClick(member) {
-  //   setSelectedMember(member)
-  // }
-
   useEffect(() => {
     if (!data) { return }
     const options = data.company.map(c => ({ value: c.id, label: c.company_name }))
@@ -103,8 +99,8 @@ export default function TeamTemplate({ data }) {
             {teamData && (
               <div className='mt-8 mx-6'>
                 <div className='mb-2'>メンバーを選択</div>
-                <div className='grid grid-cols-3'>
-                  <div className='col-span-2 bg-white w-full h-44 overflow-y-scroll'>
+                <div className='grid grid-cols-6'>
+                  <div className='col-span-4 bg-white w-full h-44 overflow-y-scroll'>
                     <div className='grid grid-cols-5 -ml-2 mt-2 gap-y-2'>
                       {Object.entries(teamData.members).map(([index, member]) => (
                         <button
@@ -119,11 +115,16 @@ export default function TeamTemplate({ data }) {
                     </div>
                   </div>
                   <div className='col-span-1 mx-6 bg-white w-full h-44'>
-                    <div className='text-center text-sm'>チーム平均</div>
+                    <div className='mt-2 text-center text-sm'>チーム平均</div>
                     <SimpleRadarChart
-                      isFirst={false}
+                      isFirst={true}
                       scores={teamData.team_scores}
                     />
+                    <div></div>
+                  </div>
+                  <div className='col-span-1 mx-6 bg-white w-full h-44'>
+                    <div className='mt-2 text-center text-sm'>ギャップ値</div>
+                    <div className="mt-12 text-3xl flex justify-center items-center">{teamData.gap}</div>
                   </div>
                 </div>
               </div>
@@ -133,8 +134,8 @@ export default function TeamTemplate({ data }) {
                 <div className='mb-2'>{selectedMember.received_evaluations_snapshot} のアセスメント結果</div>
                 <div className=' bg-white w-full h-64 flex items-center justify-start overflow-x-scroll'>
                   <div>
-                    <div className='h-44 w-72 '>
-                      <div className='ml-10 text-red-600 text-sm'>自己評価</div>
+                    <div className='h-44 w-72 flex flex-col items-center'>
+                      <div className=' text-red-600 text-sm mb-2'>自己評価</div>
                       <SimpleRadarChart
                         isFirst={true}
                         scores={selectedMember["1st"]}
@@ -142,20 +143,29 @@ export default function TeamTemplate({ data }) {
                     </div>
                   </div>
                   <div>
-                    <div className='h-44 w-72'>
-                      <div className='ml-10 text-red-600 text-sm'>第三者からの評価（平均）</div>
-                      {/* <RadarChart /> */}
-                    </div>
+                    {selectedMember && selectedMember["3rd_average"] && (
+                      <div className='h-44 w-72 flex flex-col items-center'>
+                        <div className=' text-red-600 text-sm mb-2'>第三者からの評価（平均）</div>
+                        <div className='h-44 w-72'>
+                          <SimpleRadarChart
+                            isFirst={false}
+                            scores={selectedMember["3rd_average"]}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
-
-                  {/* {selectedMember.map((member, index) => (
-                    <div key={index} >
-                      <div className='h-44 w-72'>
-                        <div className='ml-10 text-red-600 text-sm'>第三者からの評価（匿名）</div>
-                        <RadarChart />
+                  {selectedMember && Object.entries(selectedMember["3rd"]).map(([key, scores]) => (
+                    <div key={key} >
+                      <div className='h-44 w-72 flex flex-col items-center mb-2'>
+                        <div className=' text-red-600 text-sm'>第三者からの評価（匿名）</div>
+                        <SimpleRadarChart
+                          isFirst={false}
+                          scores={scores}
+                        />
                       </div>
                     </div>
-                  ))} */}
+                  ))}
                 </div>
               </div>
             )}
