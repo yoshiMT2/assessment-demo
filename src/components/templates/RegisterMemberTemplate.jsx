@@ -51,6 +51,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
       setTeamMembers(teamMembers)
     }
   }, [members, selectedTeam])
+  console.log(selectedMethod)
 
   useEffect(() => {
     if (!teams) { return }
@@ -77,7 +78,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
     setIsLoading(true)
     const url = member ? MEMBER_ENDPOINT + 'update/' + member.id + '/' : MEMBER_ENDPOINT + 'create/'
     const method = member ? 'PATCH' : 'POST'
-    console.log(formData)
+    // console.log(formData)
     const resp = await requestWithTokenRefresh(url, {
       method: method,
       headers: {
@@ -97,14 +98,17 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
 
   async function handleCSVDataSubmit() {
     setIsLoading(true)
-    const url = selectedMethod.value === 1 ? BACKEND_URL + 'upload_csv/' : BACKEND_URL + 'update_csv/'
+    const url = selectedType.value === 1 ? BACKEND_URL + 'api/users/upload/' : BACKEND_URL + 'api/update_csv/'
+    const method = selectedType.value === 1 ? 'POST' : 'PATCH'
     const resp = await requestWithTokenRefresh(url, {
-      method: 'POST',
+      method: method,
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(uploadedData),
     })
+    const data = await resp.json()
+    console.log(data)
     if (resp.status === 200 || resp.status === 201) {
       setStatus("success")
     } else {
@@ -115,14 +119,14 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
     setShowComfirmation(true)
   }
 
-  console.log(uploadedData)
-
   function handleConfirm() {
     refreshData()
     setShowComfirmation(false)
   }
 
   function handleButtonClick() {
+    // console.log(uploadedData)
+
     if (selectedType.value === 1) {
       DownloadCSV(columnHeaders)
     } else if (selectedType.value === 2) {
@@ -235,7 +239,6 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
             <CSVDataTable
               data={uploadedData}
               type={selectedType}
-              setShowModal={setShowModal}
               submitData={handleCSVDataSubmit}
             />
           </div>

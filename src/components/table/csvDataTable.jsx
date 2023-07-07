@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 
 
-export default function CSVDataTable({ data, type, setShowModal, submitData }) {
+export default function CSVDataTable({ data, type, submitData }) {
   const allKeys = Object.keys(data[0])
   const teamNames = allKeys.slice(6)
   function handleSubmitButtonClick() {
-    setShowModal(true)
+    submitData()
   }
 
   return (

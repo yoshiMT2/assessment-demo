@@ -9,9 +9,9 @@ import { BACKEND_URL } from '../../utils/constants'
 import { requestWithTokenRefresh } from '../../utils/AuthService'
 
 // eslint-disable-next-line react/prop-types
-export default function RegisterTeamTemplate({ teams ,refreshData }) {
+export default function RegisterTeamTemplate({ teams, refreshData }) {
   const navigate = useNavigate()
-  const [formData, ] = useAtom(formAtom)
+  const [formData,] = useAtom(formAtom)
   const [team, setTeam] = useState()
   const [status, setStatus] = useState()
   const [isLoading, setIsLoading] = useState(false)
@@ -40,7 +40,7 @@ export default function RegisterTeamTemplate({ teams ,refreshData }) {
     setShowComfirmation(true)
   }
 
-  function handleConfirm(){
+  function handleConfirm() {
     refreshData()
     setShowComfirmation(false)
   }
@@ -67,11 +67,11 @@ export default function RegisterTeamTemplate({ teams ,refreshData }) {
       )}
       {showComfirmation && (
         <ConfirmationModal
-        open={showComfirmation}
-        title="データ登録・更新完了"
-        msg="チーム情報の登録・更新が正常に終了しました。"
-        status={status}
-        onConfirm={handleConfirm}
+          open={showComfirmation}
+          title="データ登録・更新完了"
+          msg="チーム情報の登録・更新が正常に終了しました。"
+          status={status}
+          onConfirm={handleConfirm}
         />
       )}
     </div>

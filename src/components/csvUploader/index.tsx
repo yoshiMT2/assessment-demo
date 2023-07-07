@@ -19,6 +19,7 @@ const CsvUploader = ({uploadData}) => {
     const cleanData = csvData.slice(1)
     uploadData(cleanData)
   },[csvData])
+  console.log(csvData)
 
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });

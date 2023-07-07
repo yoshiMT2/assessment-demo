@@ -11,3 +11,7 @@ export const DownloadCSV = (data) => {
   link.click();
   document.body.removeChild(link);
 };
+
+export const csvToJson = (data) => {
+  
+}

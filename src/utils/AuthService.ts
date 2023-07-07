@@ -56,6 +56,7 @@ export async function refreshToken(token, navigate) {
 }
 
 export const requestWithTokenRefresh = async (url, options = {}, navigate) => {
+  const csrftoken = getCookie("csrftoken");
   const tokenFromStorage = localStorage.getItem("token")
   const token = tokenFromStorage ? JSON.parse(tokenFromStorage) : null
   let response;
@@ -65,6 +66,7 @@ export const requestWithTokenRefresh = async (url, options = {}, navigate) => {
       headers: {
         ...options.headers,
         'Authorization': 'JWT ' + token.access,
+        "X-CSRFToken": csrftoken!,
       }
     });
   } else {
@@ -79,6 +81,7 @@ export const requestWithTokenRefresh = async (url, options = {}, navigate) => {
         headers: {
           ...options.headers,
           'Authorization': 'JWT ' + newToken,
+          "X-CSRFToken": csrftoken!,
         }
       });
     } else {
