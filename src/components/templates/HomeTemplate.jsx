@@ -11,6 +11,7 @@ export default function HomeTemplate({ assessments }) {
   const user = UseUserDetails()[0]
   const { id } = useParams()
   console.log(id)
+  console.log(assessments)
   const [selfAssessment, setSelfAssessment] = useState()
   const [otherAssessments, setOtherAssessments] = useState()
   const [,setAssessment] = useAtom(assessmentAtom)
