@@ -10,14 +10,13 @@ import { assessmentAtom } from '../../utils/atom';
 export default function HomeTemplate({ assessments }) {
   const user = UseUserDetails()[0]
   const { id } = useParams()
-  console.log(id)
-  console.log(assessments)
   const [selfAssessment, setSelfAssessment] = useState()
   const [otherAssessments, setOtherAssessments] = useState()
   const [,setAssessment] = useAtom(assessmentAtom)
 
   useEffect(() => {
-    if (!assessments) { return }
+    if (!assessments ) { return }
+    if (!Array.isArray(assessments)) { return }
     const myAssessment = assessments.filter(a => a.received_evaluations === user.id)
     setSelfAssessment(myAssessment[0])
     const otherAssessments = assessments.filter(a => a.received_evaluations !== user.id)

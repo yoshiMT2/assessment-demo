@@ -50,18 +50,14 @@ export default function TeamTemplate({ data }) {
       const query = `subscription_id=${selectedSubscription.value}&team_id=${selectedTeam.value}`
       const resp = await requestWithTokenRefresh(SCORE_ENDPOINT + `members/list/?${query}`, {}, navigate)
       const data = await resp.json()
-      console.log(data)
       if (resp.ok) {
         setTeamData(data)
       }
     }
     getMembers()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTeam])
 
-  useEffect(() => {
-    if (!selectedMember) { return }
-    console.log(selectedMember["1st"])
-  }, [selectedMember])
 
 
   return (

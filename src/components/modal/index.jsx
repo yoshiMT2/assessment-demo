@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
 // eslint-disable-next-line react/prop-types
-export default function ConfirmationModal({ open, title, msg, status, onConfirm }) {
+export default function ConfirmationModal({ open, title, msg, status, onConfirm, errorMessage }) {
+  console.log(errorMessage)
   function clickHandler() {
     onConfirm()
   }
@@ -48,7 +50,7 @@ export default function ConfirmationModal({ open, title, msg, status, onConfirm 
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md sm:p-6">
                 <div>
                   <Icon />
                   <div className="mt-3 text-center sm:mt-5">
@@ -60,6 +62,20 @@ export default function ConfirmationModal({ open, title, msg, status, onConfirm 
                         {msg}
                       </p>
                     </div>
+                    {errorMessage &&
+                      errorMessage.map((msg, idx) => {
+                        const key = Object.keys(msg).filter(k => k !== '場所')[0];
+                        return (
+                        <div key={idx} className="flex text-left">
+                          <div className="w-1/6">
+                            {msg["場所"]}
+                          </div>
+                          <div className="text-left">
+                            {msg[key]}
+                          </div>
+                        </div>
+                      )})
+                    }
                   </div>
                 </div>
                 <div className="mt-5 sm:mt-6 items-center px-24">

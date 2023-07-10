@@ -30,7 +30,6 @@ function LoginPage() {
       window.location.reload(false);
     } catch (error) {
       setErrorMessage(error);
-      console.log(error)
     }
   };
 

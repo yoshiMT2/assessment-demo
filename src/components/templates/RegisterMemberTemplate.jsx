@@ -7,28 +7,32 @@ import Dropdown from '../dropdown'
 import Button from '../button'
 import CsvUploader from '../csvUploader'
 import { DownloadCSV } from '../../utils/csv'
-import { RegisterationHeaders, explanationRow } from '../../config/csvHeaders'
+import { RegisterationHeaders, explanationRow, explanationAssessmentRow } from '../../config/csvHeaders'
 import { RegistrationMethods, RegistrationTypes, AssignMethods } from '../../config/options'
 import MemberTable from '../table/memberTable'
-import CSVDataTable from '../table/csvDataTable'
+import CSVMemberTable from '../table/csvMemberTable'
 import MemberModal from '../modal/memberModal'
 import ConfirmationModal from '../modal'
-import { BACKEND_URL, MEMBER_ENDPOINT } from '../../utils/constants'
+import { BACKEND_URL, MEMBER_ENDPOINT, ASSIGN_ENDPOINT } from '../../utils/constants'
 import { requestWithTokenRefresh } from '../../utils/AuthService'
+import { useNavigate } from 'react-router'
 
 
 export default function RegisterMemberTemplate({ members, teams, refreshData }) {
+  const navigate = useNavigate()
   const [selectedTeam, setSelectedTeam] = useState({ value: 0, label: "全チーム" })
   const [selectedMethod, setSelectedMethod] = useState(RegistrationMethods[0])
-  const [selectedAssignMethod, setSelectedAssignMethod] = useState()
+  const [selectedAssignMethod, setSelectedAssignMethod] = useState(AssignMethods[0])
   const [selectedType, setSelectedType] = useState(RegistrationTypes[0])
-  const [numOfAssessor, setNumOfAssessor] = useState()
+  const [assignNumOptions, setAssignNumOptions] = useState()
+  const [numOfAssessors, setNumOfAssessors] = useState()
   const [teamMembers, setTeamMembers] = useState()
   const [columnHeaders, setColumnHeaders] = useState()
   const [uploadedData, setUploadedData] = useState()
   const [formData,] = useAtom(formAtom)
   const [member, setMember] = useState()
   const [status, setStatus] = useState()
+  const [errorMessage, setErrorMessage] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [showComfirmation, setShowComfirmation] = useState(false)
@@ -51,15 +55,41 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
       setTeamMembers(teamMembers)
     }
   }, [members, selectedTeam])
-  console.log(selectedMethod)
+
+  useEffect(() => {
+    if (!Array.isArray(uploadedData)) { return }
+    if (selectedMethod.value === 3) {
+      const SendRandom = async () => {
+        const url = ASSIGN_ENDPOINT + 'update/'
+        const resp = await requestWithTokenRefresh(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(uploadedData),
+        })
+        const data = await resp.json()
+        const options = data.map(num => ({ value: num, label: num }))
+        setAssignNumOptions(options)
+      }
+      SendRandom()
+    }
+  }, [uploadedData])
+
+  useEffect(() => {
+    if (!numOfAssessors) { return }
+    const SendAssignNumber = async () => {
+      const url = ASSIGN_ENDPOINT + `fix/?random_id=${numOfAssessors}`
+      await requestWithTokenRefresh(url, {}, navigate)
+    }
+    SendAssignNumber()
+  }, [numOfAssessors])
 
   useEffect(() => {
     if (!teams) { return }
     let headers;
     let secondRow;
-    if (selectedMethod.value === 3) {
-      return
-    } else {
+    if (selectedMethod.value === 2) {
       if (selectedType.value === 1) {
         const teamNames =
           teams
@@ -70,15 +100,24 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
         const teamExplanations = teamNames.map(_ => "所属する場合は1を記入してください")
         secondRow = [...explanationRow, ...teamExplanations]
       }
+    } else if (selectedMethod.value === 3) {
+      const teamNames =
+        teams
+          .filter(t => t.label !== "全チーム")
+          .map(t => t.label)
+      headers = [...RegisterationHeaders, "random", ...teamNames]
+
+      const teamExplanations = teamNames.map(_ => "編集不可")
+      secondRow = [...explanationAssessmentRow, ...teamExplanations]
     }
     setColumnHeaders([headers, secondRow])
-  }, [teams])
+  }, [teams, selectedMethod])
+
 
   async function handleSubmit() {
     setIsLoading(true)
     const url = member ? MEMBER_ENDPOINT + 'update/' + member.id + '/' : MEMBER_ENDPOINT + 'create/'
     const method = member ? 'PATCH' : 'POST'
-    // console.log(formData)
     const resp = await requestWithTokenRefresh(url, {
       method: method,
       headers: {
@@ -86,10 +125,12 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
       },
       body: JSON.stringify(formData),
     })
+    const data = await resp.json()
     if (resp.status === 200 || resp.status === 201) {
       setStatus("success")
     } else {
       setStatus("failed")
+      setErrorMessage(data)
     }
     setShowModal(false)
     setIsLoading(false)
@@ -98,7 +139,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
 
   async function handleCSVDataSubmit() {
     setIsLoading(true)
-    const url = selectedType.value === 1 ? BACKEND_URL + 'api/users/upload/' : BACKEND_URL + 'api/update_csv/'
+    const url = BACKEND_URL + 'api/users/upload/'
     const method = selectedType.value === 1 ? 'POST' : 'PATCH'
     const resp = await requestWithTokenRefresh(url, {
       method: method,
@@ -108,10 +149,10 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
       body: JSON.stringify(uploadedData),
     })
     const data = await resp.json()
-    console.log(data)
     if (resp.status === 200 || resp.status === 201) {
       setStatus("success")
     } else {
+      setErrorMessage(data)
       setStatus("failed")
     }
     setShowModal(false)
@@ -125,11 +166,25 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
   }
 
   function handleButtonClick() {
-    // console.log(uploadedData)
-
-    if (selectedType.value === 1) {
-      DownloadCSV(columnHeaders)
-    } else if (selectedType.value === 2) {
+    if (selectedMethod.value === 2) {
+      if (selectedType.value === 1) {
+        DownloadCSV(columnHeaders)
+      } else if (selectedType.value === 2) {
+        const memberData =
+          members
+            .map(m => [
+              m.id,
+              m.email,
+              m.name,
+              m.name_hiragana,
+              m.member_category,
+              m.is_active,
+              ...m.teamArray
+            ])
+        const csvData = columnHeaders.concat(memberData)
+        DownloadCSV(csvData)
+      }
+    } else if (selectedMethod.value === 3) {
       const memberData =
         members
           .map(m => [
@@ -139,6 +194,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
             m.name_hiragana,
             m.member_category,
             m.is_active,
+            "",
             ...m.teamArray
           ])
       const csvData = columnHeaders.concat(memberData)
@@ -187,23 +243,18 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
               />
             </div>
           )}
-          {selectedAssignMethod && (
-            <div className='ml-6 mt-4 w-52'>
-              <div className='mb-2 '>アサイン人数</div>
-              <div className='flex h-10 items-center'>
-                <input
-                  type="number"
-                  min={0}
-                  placeholder={1}
-                  value={numOfAssessor}
-                  onChange={e => setNumOfAssessor(e.target.value)}
-                  className="h-10 w-24 ml-2 text-center rounded border-gray-300 text-indigo-600 hover:ring-indigo-600"
-                />
-              </div>
+          {assignNumOptions && (
+            <div className='w-36 ml-6 mt-4 z-20'>
+              <div className='mb-2 whitespace-nowrap'>アサイン人数</div>
+              <Dropdown
+                options={assignNumOptions}
+                selectedOption={numOfAssessors}
+                setSelectedOption={setNumOfAssessors}
+              />
             </div>
           )}
         </div>
-        {selectedMethod && selectedType && selectedMethod.value === 2 && (
+        {selectedMethod && selectedType && (selectedMethod.value === 2 || selectedMethod.value === 3) && (
           <div className='flex mt-6 mr-10 justify-center gap-20'>
             <div className='text-center'>
               <div>CSVダウンロード</div>
@@ -234,9 +285,9 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
             />
           </div>
         )}
-        {uploadedData !== undefined && uploadedData.length > 0 && (
+        {uploadedData !== undefined && selectedMethod.value === 2 && uploadedData.length > 0 && (
           <div className={`bg-white px-2 pt-6 ${selectedMethod.value === 1 ? "mt-6" : "mt-16"} rounded-lg border`}>
-            <CSVDataTable
+            <CSVMemberTable
               data={uploadedData}
               type={selectedType}
               submitData={handleCSVDataSubmit}
@@ -270,6 +321,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
           }
           status={status}
           onConfirm={handleConfirm}
+          errorMessage={errorMessage}
         />
       )}
     </div>

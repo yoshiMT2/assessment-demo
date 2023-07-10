@@ -17,8 +17,7 @@ export default function Header() {
       setJobTitle("一般社員")
     }
   },[])
-
-  console.log(user)
+  
   return (
     <div className='fixed top-0 z-30 w-full flex h-16 bg-primary-1 justify-between items-center'>
       <div className='flex ml-5 items-center'>

@@ -22,7 +22,6 @@ export default function ResultTemplate({ results }) {
     const score = results[selectedDate.value]
     setScores(score)
   }, [results, selectedDate])
-  console.log(scores)
 
   const handleChange = (value) => {
     setSelectedDate(value);

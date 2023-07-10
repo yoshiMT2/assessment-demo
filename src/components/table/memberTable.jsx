@@ -9,7 +9,6 @@ export default function MemberTable({ members, team, setShowModal, setMemberToEd
     setFormData()
     setShowModal(true)
   }
-  console.log(team)
 
   function handleEditButtonClick(person) {
     setMemberToEdit(person)

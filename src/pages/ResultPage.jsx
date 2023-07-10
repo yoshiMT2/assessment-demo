@@ -18,7 +18,6 @@ const Result = () => {
   useEffect(() => {
     fetchResults()
   }, [fetchResults])
-  console.log(results)
 
   return (
     <div className='relative top-16 flex justify-center h-[calc(100vh-4rem)]'>

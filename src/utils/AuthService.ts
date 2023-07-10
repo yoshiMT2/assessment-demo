@@ -3,10 +3,11 @@ import { getCookie } from "./cookies";
 import jwt_decode from 'jwt-decode';
 import { LOGIN_ENDPOINT, REFRESH_ENDPOINT, BACKEND_URL } from "./constants";
 import { Decoded, User } from './type'
+import { NavigateFunction } from 'react-router';
 
 export const useLogin = () => {
   const csrftoken = getCookie("csrftoken");
-  const login = async (email, password) => {
+  const login = async (email: any, password: any) => {
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -35,7 +36,7 @@ export const useLogin = () => {
 }
 
 
-export async function refreshToken(token, navigate) {
+export async function refreshToken(token: { refresh: any; }, navigate: (arg0: string) => void) {
   // const navigate = useNavigate()
   const response = await fetch(REFRESH_ENDPOINT, {
     method: 'POST',
@@ -55,11 +56,11 @@ export async function refreshToken(token, navigate) {
   }
 }
 
-export const requestWithTokenRefresh = async (url, options = {}, navigate) => {
+export const requestWithTokenRefresh = async (url: RequestInfo | URL, options = {}, navigate: NavigateFunction | undefined) => {
   const csrftoken = getCookie("csrftoken");
   const tokenFromStorage = localStorage.getItem("token")
   const token = tokenFromStorage ? JSON.parse(tokenFromStorage) : null
-  let response;
+  let response: Response;
   if (token) {
     response = await fetch(url, {
       ...options,

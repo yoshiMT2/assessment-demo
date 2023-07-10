@@ -24,4 +24,7 @@ export const MEMBER_ENDPOINT = BACKEND_URL + 'api/user/'
 
 export const COMPANY_ENDPOINT = BACKEND_URL + 'api/company/'
 
+export const ASSIGN_ENDPOINT = BACKEND_URL + 'api/random/'
+
+
 
