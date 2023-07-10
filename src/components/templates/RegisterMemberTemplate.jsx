@@ -59,6 +59,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
   useEffect(() => {
     if (!Array.isArray(uploadedData)) { return }
     if (selectedMethod.value === 3) {
+      setNumOfAssessors({})
       const SendRandom = async () => {
         const url = ASSIGN_ENDPOINT + 'update/'
         const resp = await requestWithTokenRefresh(url, {
@@ -79,7 +80,7 @@ export default function RegisterMemberTemplate({ members, teams, refreshData }) 
   useEffect(() => {
     if (!numOfAssessors) { return }
     const SendAssignNumber = async () => {
-      const url = ASSIGN_ENDPOINT + `fix/?random_id=${numOfAssessors}`
+      const url = ASSIGN_ENDPOINT + `fix/?random_id=${numOfAssessors.value}`
       await requestWithTokenRefresh(url, {}, navigate)
     }
     SendAssignNumber()
