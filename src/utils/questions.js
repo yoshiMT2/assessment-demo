@@ -21,9 +21,6 @@ export const questions = [
   { id: 18, category: "D", text: "上司は私のキャリアビジョンを応援してくれている", value: 1 },
   { id: 19, category: "D", text: "このチームでは、会社の理念やビジョンに紐づいたチームのビジョンがある", value: 1 },
   { id: 20, category: "D", text: "このチームのビジョンを踏まえて、自分がどんな役割なのかが明らかになっている", value: 1 },
-  { id: 21, category: "D", text: "上司と定期的に面談をしている", value: 1 },
-  { id: 22, category: "D", text: "私はこの会社で行っている業務がしっくりきている", value: 1 },
-  { id: 23, category: "E", text: "この会社で意欲的に働けている", value: 1 },
 ]
 
 export const questionsForOthers = [
