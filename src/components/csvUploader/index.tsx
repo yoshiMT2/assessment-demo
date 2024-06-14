@@ -15,6 +15,7 @@ const CsvUploader = ({uploadData}) => {
       })
     })
   }, [])
+  
   useEffect(() => {
     const cleanData = csvData.slice(1)
     uploadData(cleanData)
